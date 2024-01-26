@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
 
+# GCD
+
 # Build gcd simulator example
 # make -j20 CONFIG=GCDTLRocketConfig VERILATOR_THREADS=12 NUMACTL=1
 
 # Run example (4s, without LOADMEM 24s)
-make CONFIG=GCDTLRocketConfig BINARY=../../tests/gcd.riscv run-binary LOADMEM=1
+#make CONFIG=GCDTLRocketConfig BINARY=../../tests/gcd.riscv run-binary LOADMEM=1
+
+# Tio
 
 # Build Tio
-#make -j20 CONFIG=TioConfig VERILATOR_THREADS=12 NUMACTL=1
+make -j20 CONFIG=TioConfig VERILATOR_THREADS=12 NUMACTL=1
+
+# Run example (4s, without LOADMEM 24s)
+make CONFIG=TioConfig BINARY=../../tests/tio.riscv run-binary LOADMEM=1
