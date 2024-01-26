@@ -1,8 +1,10 @@
+# Conda
 eval "$(/home/gonsolo/miniforge3/bin/conda shell.bash hook)"
 conda init
-
 conda init --reverse $SHELL
-
 conda deactivate
+Sometimes conda is commented out in .bashrc
 
-conda is commented out in .bashrc
+# Build setup
+# If build-setup.sh step 9 fails:
+sudo chmod ga+r /boo/vmlinuz-6.5.0-17-generic
