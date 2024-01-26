@@ -3,7 +3,6 @@ package tio
 import chisel3._
 import chisel3.util._
 import chisel3.experimental.{IntParam, BaseModule}
-import freechips.rocketchip.amba.axi4._
 import freechips.rocketchip.subsystem.BaseSubsystem
 import org.chipsalliance.cde.config.{Parameters, Field, Config}
 import freechips.rocketchip.diplomacy._
@@ -82,7 +81,6 @@ trait TioModule extends HasRegMap {
   val clock: Clock
   val reset: Reset
 
-  // How many clock cycles in a PWM cycle?
   val x = Reg(UInt(params.width.W))
   val y = Wire(new DecoupledIO(UInt(params.width.W)))
   val tio = Wire(new DecoupledIO(UInt(params.width.W)))
@@ -115,9 +113,7 @@ trait TioModule extends HasRegMap {
     0x0C -> Seq(
       RegField.r(params.width, tio))) // read-only, tio.ready is set on read
 }
-// DOC include end: Tio instance regmap
 
-// DOC include start: Tio router
 class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters)
   extends TLRegisterRouter(
     params.address, "tio", Seq("ucbbar,tio"),

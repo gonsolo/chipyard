@@ -18,7 +18,6 @@ unsigned int tio_ref(unsigned int x, unsigned int y) {
   return x;
 }
 
-// DOC include start: TIO test
 int main(void)
 {
   uint32_t result, ref, x = 20, y = 15;
@@ -28,7 +27,6 @@ int main(void)
 
   reg_write32(TIO_X, x);
   reg_write32(TIO_Y, y);
-
 
   // wait for peripheral to complete
   while ((reg_read8(TIO_STATUS) & 0x1) == 0) ;
@@ -43,4 +41,3 @@ int main(void)
   printf("Hardware result %d is correct for TIO\n", result);
   return 0;
 }
-// DOC include end: TIO test
