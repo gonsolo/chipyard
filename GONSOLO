@@ -8,3 +8,6 @@ Sometimes conda is commented out in .bashrc
 # Build setup
 # If build-setup.sh step 9 fails:
 sudo chmod ga+r /boo/vmlinuz-6.5.0-17-generic
+
+# Environment
+source ./env.sh
