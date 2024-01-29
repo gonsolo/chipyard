@@ -3,6 +3,7 @@ package tio
 import chisel3._
 import chisel3.util._
 import chisel3.experimental.{IntParam, BaseModule}
+import freechips.rocketchip.prci._
 import freechips.rocketchip.subsystem.BaseSubsystem
 import org.chipsalliance.cde.config.{Parameters, Field, Config}
 import freechips.rocketchip.diplomacy._
@@ -29,18 +30,16 @@ class TioIO(val w: Int) extends Bundle {
   val busy = Output(Bool())
 }
 
-trait TioTopIO extends Bundle {
+class TioTopIO extends Bundle {
   val tio_busy = Output(Bool())
 }
 
-trait HasTioIO extends BaseModule {
-  val w: Int
-  val io = IO(new TioIO(w))
+trait HasTioTopIO {
+  def io: TioTopIO
 }
 
-class TioMMIOChiselModule(val w: Int) extends Module
-  with HasTioIO
-{
+class TioMMIOChiselModule(val w: Int) extends Module {
+  val io = IO(new TioIO(w))
   val s_idle :: s_run :: s_done :: Nil = Enum(3)
 
   val state = RegInit(s_idle)
@@ -66,60 +65,59 @@ class TioMMIOChiselModule(val w: Int) extends Module
     when (tio > tmp) {
       tio := tio - tmp
     } .otherwise {
-      tmp := tmp - tio 
+      tmp := tmp - tio
     }
   }
 
   io.busy := state =/= s_idle
 }
 
-trait TioModule extends HasRegMap {
-  val io: TioTopIO
+class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends ClockSinkDomain(ClockSinkParameters())(p) {
+  val device = new SimpleDevice("tio", Seq("ucbbar,tio"))
+  val node = TLRegisterNode(Seq(AddressSet(params.address, 4096-1)), device, "reg/control", beatBytes=beatBytes)
 
-  implicit val p: Parameters
-  def params: TioParams
-  val clock: Clock
-  val reset: Reset
+  override lazy val module = new TioImpl
+  class TioImpl extends Impl with HasTioTopIO {
+    val io = IO(new TioTopIO)
+    withClockAndReset(clock, reset) {
+      // How many clock cycles in a PWM cycle?
+      val x = Reg(UInt(params.width.W))
+      val y = Wire(new DecoupledIO(UInt(params.width.W)))
+      val tio = Wire(new DecoupledIO(UInt(params.width.W)))
+      val status = Wire(UInt(2.W))
 
-  val x = Reg(UInt(params.width.W))
-  val y = Wire(new DecoupledIO(UInt(params.width.W)))
-  val tio = Wire(new DecoupledIO(UInt(params.width.W)))
-  val status = Wire(UInt(2.W))
+      val impl_io = {
+        val impl = Module(new TioMMIOChiselModule(params.width))
+        impl.io
+      }
 
-  val impl = Module(new TioMMIOChiselModule(params.width))
+      impl_io.clock := clock
+      impl_io.reset := reset.asBool
 
-  impl.io.clock := clock
-  impl.io.reset := reset.asBool
+      impl_io.x := x
+      impl_io.y := y.bits
+      impl_io.input_valid := y.valid
+      y.ready := impl_io.input_ready
 
-  impl.io.x := x
-  impl.io.y := y.bits
-  impl.io.input_valid := y.valid
-  y.ready := impl.io.input_ready
+      tio.bits := impl_io.tio
+      tio.valid := impl_io.output_valid
+      impl_io.output_ready := tio.ready
 
-  tio.bits := impl.io.tio
-  tio.valid := impl.io.output_valid
-  impl.io.output_ready := tio.ready
+      status := Cat(impl_io.input_ready, impl_io.output_valid)
+      io.tio_busy := impl_io.busy
 
-  status := Cat(impl.io.input_ready, impl.io.output_valid)
-  io.tio_busy := impl.io.busy
-
-  regmap(
-    0x00 -> Seq(
-      RegField.r(2, status)), // a read-only register capturing current status
-    0x04 -> Seq(
-      RegField.w(params.width, x)), // a plain, write-only register
-    0x08 -> Seq(
-      RegField.w(params.width, y)), // write-only, y.valid is set on write
-    0x0C -> Seq(
-      RegField.r(params.width, tio))) // read-only, tio.ready is set on read
+      node.regmap(
+        0x00 -> Seq(
+          RegField.r(2, status)), // a read-only register capturing current status
+        0x04 -> Seq(
+          RegField.w(params.width, x)), // a plain, write-only register
+        0x08 -> Seq(
+          RegField.w(params.width, y)), // write-only, y.valid is set on write
+        0x0C -> Seq(
+          RegField.r(params.width, tio))) // read-only, tio.ready is set on read
+    }
+  }
 }
-
-class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters)
-  extends TLRegisterRouter(
-    params.address, "tio", Seq("ucbbar,tio"),
-    beatBytes = beatBytes)(
-      new TLRegBundle(params, _) with TioTopIO)(
-      new TLRegModule(params, _, _) with TioModule)
 
 trait CanHavePeripheryTio { this: BaseSubsystem =>
   private val portName = "tio"
@@ -127,18 +125,14 @@ trait CanHavePeripheryTio { this: BaseSubsystem =>
   val tio_busy = p(TioKey) match {
     case Some(params) => {
       val tio = {
-        val tio = pbus { LazyModule(new TioTL(params, pbus.beatBytes)(p)) }
+        val tio = LazyModule(new TioTL(params, pbus.beatBytes)(p))
+        tio.clockNode := pbus.fixedClockNode
         pbus.coupleTo(portName) { tio.node := TLFragmenter(pbus.beatBytes, pbus.blockBytes) := _ }
-        tio 
+        tio
       }
-      val pbus_io = pbus { InModuleBody {
-        val busy = IO(Output(Bool()))
-        busy := tio.module.io.tio_busy
-        busy
-      }}
       val tio_busy = InModuleBody {
         val busy = IO(Output(Bool())).suggestName("tio_busy")
-        busy := pbus_io
+        busy := tio.module.io.tio_busy
         busy
       }
       Some(tio_busy)
