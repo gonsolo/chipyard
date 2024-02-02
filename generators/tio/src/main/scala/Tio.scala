@@ -76,6 +76,10 @@ class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends C
   val device = new SimpleDevice("tio", Seq("ucbbar,tio"))
   val node = TLRegisterNode(Seq(AddressSet(params.address, 4096-1)), device, "reg/control", beatBytes=beatBytes)
 
+  val clientNode = TLClientNode(Seq(TLMasterPortParameters.v1(Seq(TLMasterParameters.v1(
+    name = "dma-test", sourceId = IdRange(0, 1))))))
+
+
   override lazy val module = new TioImpl
   class TioImpl extends Impl with HasTioTopIO {
     val io = IO(new TioTopIO)
