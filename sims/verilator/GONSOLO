@@ -18,7 +18,7 @@
 
 # Quick compile for developing
 ## Launch sbt server
-# make CONFIG=TioConfig launch-sbt
+make CONFIG=TioConfig launch-sbt
 ## List projects in sbt shell
 # In sbt: "projects"
 ## Select tio project
