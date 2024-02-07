@@ -4,7 +4,7 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental.{IntParam, BaseModule}
 import freechips.rocketchip.prci._
-import freechips.rocketchip.subsystem.BaseSubsystem
+import freechips.rocketchip.subsystem.{BaseSubsystem, CacheBlockBytes}
 import org.chipsalliance.cde.config.{Parameters, Field, Config}
 import freechips.rocketchip.diplomacy._
 import freechips.rocketchip.regmapper.{HasRegMap, RegField}
@@ -13,7 +13,9 @@ import freechips.rocketchip.util.UIntIsOneOf
 
 case class TioParams(
   address: BigInt = 0x4000,
-  width: Int = 32)
+  width: Int = 32,
+  dmaBase: BigInt = 0x88000000L,
+  dmaSize: BigInt = 0x1000)
 
 case object TioKey extends Field[Option[TioParams]](None)
 
@@ -73,18 +75,54 @@ class TioMMIOChiselModule(val w: Int) extends Module {
 }
 
 class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends ClockSinkDomain(ClockSinkParameters())(p) {
+
   val device = new SimpleDevice("tio", Seq("ucbbar,tio"))
-  val node = TLRegisterNode(Seq(AddressSet(params.address, 4096-1)), device, "reg/control", beatBytes=beatBytes)
-
-  val clientNode = TLClientNode(Seq(TLMasterPortParameters.v1(Seq(TLMasterParameters.v1(
-    name = "dma-test", sourceId = IdRange(0, 1))))))
-
+  val registerNode = TLRegisterNode(Seq(AddressSet(params.address, 4096-1)), device, "reg/control", beatBytes=beatBytes)
+  val clientNode = TLClientNode(Seq(TLMasterPortParameters.v1(Seq(TLMasterParameters.v1(name = "dma-test", sourceId = IdRange(0, 1))))))
 
   override lazy val module = new TioImpl
+
   class TioImpl extends Impl with HasTioTopIO {
+
     val io = IO(new TioTopIO)
+
+    // DMA
+    val (mem, edge) = clientNode.out(0)
+    val addressBits = edge.bundle.addressBits
+    val blockBytes = p(CacheBlockBytes)
+    require(params.dmaSize % blockBytes == 0, "DMA size does not match!")
+    val s_dma_init :: s_dma_write :: s_dma_resp :: s_dma_done :: Nil = Enum(4)
+
     withClockAndReset(clock, reset) {
-      // How many clock cycles in a PWM cycle?
+      val dma_state = RegInit(s_dma_init)
+      val address = Reg(UInt(addressBits.W))
+      val bytesLeft = Reg(UInt(log2Ceil(params.dmaSize+1).W))
+
+      mem.a.valid := dma_state === s_dma_write
+      mem.a.bits := edge.Put(
+        fromSource = 0.U,
+        toAddress = address,
+        lgSize = log2Ceil(blockBytes).U,
+        data = 3.U)._2
+      mem.d.ready := dma_state === s_dma_resp
+
+      when (dma_state === s_dma_init) {
+        address := params.dmaBase.U
+        bytesLeft := params.dmaSize.U
+        dma_state := s_dma_write
+      }
+
+      when (edge.done(mem.a)) {
+        address := address + blockBytes.U
+        bytesLeft := bytesLeft - blockBytes.U
+        dma_state := s_dma_resp
+      }
+
+      when (mem.d.fire) {
+        dma_state := Mux(bytesLeft === 0.U, s_dma_done, s_dma_write)
+      }
+      // DMA
+
       val x = Reg(UInt(params.width.W))
       val y = Wire(new DecoupledIO(UInt(params.width.W)))
       val tio = Wire(new DecoupledIO(UInt(params.width.W)))
@@ -110,15 +148,18 @@ class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends C
       status := Cat(impl_io.input_ready, impl_io.output_valid)
       io.tio_busy := impl_io.busy
 
-      node.regmap(
+      registerNode.regmap(
         0x00 -> Seq(
-          RegField.r(2, status)), // a read-only register capturing current status
+          RegField.r(2, status)),               // a read-only status register
         0x04 -> Seq(
-          RegField.w(params.width, x)), // a plain, write-only register
+          RegField.w(params.width, x)),         // a plain, write-only register
         0x08 -> Seq(
-          RegField.w(params.width, y)), // write-only, y.valid is set on write
+          RegField.w(params.width, y)),         // write-only, y.valid is set on write
         0x0C -> Seq(
-          RegField.r(params.width, tio))) // read-only, tio.ready is set on read
+          RegField.r(params.width, tio)),       // read-only, tio.ready is set on read
+        0x10 -> Seq(
+          RegField.r(2, dma_state))   // read-only
+        )
     }
   }
 }
@@ -131,7 +172,8 @@ trait CanHavePeripheryTio { this: BaseSubsystem =>
       val tio = {
         val tio = LazyModule(new TioTL(params, pbus.beatBytes)(p))
         tio.clockNode := pbus.fixedClockNode
-        pbus.coupleTo(portName) { tio.node := TLFragmenter(pbus.beatBytes, pbus.blockBytes) := _ }
+        pbus.coupleTo(portName) { tio.registerNode := TLFragmenter(pbus.beatBytes, pbus.blockBytes) := _ }
+        fbus.coupleFrom("dma-test") { _ := tio.clientNode }
         tio
       }
       val tio_busy = InModuleBody {
