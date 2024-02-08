@@ -97,13 +97,14 @@ class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends C
       val dma_state = RegInit(s_dma_init)
       val address = Reg(UInt(addressBits.W))
       val bytesLeft = Reg(UInt(log2Ceil(params.dmaSize+1).W))
+      val testValue = 666.U
 
       mem.a.valid := dma_state === s_dma_write
       mem.a.bits := edge.Put(
         fromSource = 0.U,
         toAddress = address,
         lgSize = log2Ceil(blockBytes).U,
-        data = 3.U)._2
+        data = testValue)._2
       mem.d.ready := dma_state === s_dma_resp
 
       when (dma_state === s_dma_init) {

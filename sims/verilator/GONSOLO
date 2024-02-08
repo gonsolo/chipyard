@@ -13,12 +13,12 @@
 # Build Tio
 #make -j20 CONFIG=TioConfig VERILATOR_THREADS=12 NUMACTL=1
 
-# Run example (4s, without LOADMEM 24s)
-#make CONFIG=TioConfig BINARY=../../tests/tio.riscv run-binary LOADMEM=1
+# Run example (4s, without LOADMEM 24s) (includes building)
+make -j20 CONFIG=TioConfig BINARY=../../tests/tio.riscv run-binary LOADMEM=1
 
 # Quick compile for developing
 ## Launch sbt server
-make CONFIG=TioConfig launch-sbt
+#make CONFIG=TioConfig launch-sbt
 ## List projects in sbt shell
 # In sbt: "projects"
 ## Select tio project
