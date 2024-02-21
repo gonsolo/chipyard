@@ -98,14 +98,27 @@ class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends C
       val address = Reg(UInt(addressBits.W))
       val bytesLeft = Reg(UInt(log2Ceil(params.dmaSize+1).W))
       val testValue = 666.U
+      val lgBlockBytes = log2Ceil(blockBytes).U
 
       mem.a.valid := dma_state === s_dma_write
-      mem.a.bits := edge.Put(
+      val (_, putBits) = edge.Put(
         fromSource = 0.U,
         toAddress = address,
-        lgSize = log2Ceil(blockBytes).U,
-        data = testValue)._2
+        lgSize = lgBlockBytes,
+        data = testValue)
       mem.d.ready := dma_state === s_dma_resp
+
+      val (_, getBits) = edge.Get(
+        fromSource = 0.U,
+        toAddress = address,
+        lgSize = lgBlockBytes)
+
+      val putting = true.B
+      when (putting) {
+        mem.a.bits := putBits
+      }.otherwise {
+        mem.a.bits := getBits
+      }
 
       when (dma_state === s_dma_init) {
         address := params.dmaBase.U
@@ -159,7 +172,7 @@ class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends C
         0x0C -> Seq(
           RegField.r(params.width, tio)),       // read-only, tio.ready is set on read
         0x10 -> Seq(
-          RegField.r(2, dma_state))   // read-only
+          RegField.r(2, dma_state))             // read-only
         )
     }
   }

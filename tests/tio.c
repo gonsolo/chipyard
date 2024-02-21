@@ -43,8 +43,10 @@ int main(void) {
 	result = reg_read32(TIO_TIO);
 	ref = tio_ref(x, y);
 
-	printf("Waiting for DMA.\n");
-	while ((reg_read8(TIO_DMA_STATE) & 0b11) != 3) /* nix */ ;
+	printf("Waiting for DMA %d.\n", reg_read8(TIO_DMA_STATE) & 0b11);
+	while ((reg_read8(TIO_DMA_STATE) & 0b11) != 3) {
+		printf("Waiting...\n");
+	}
 	printf("DMA finished.\n");
 	//uint32_t dma_value = reg_read32(0x88000000L);
 	uint32_t address_start = 0x88000000;
