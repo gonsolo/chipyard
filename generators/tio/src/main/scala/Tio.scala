@@ -33,7 +33,7 @@ class TioIO(val w: Int) extends Bundle {
 }
 
 class TioTopIO extends Bundle {
-  val tio_busy = Output(Bool())
+  //val tio_busy = Output(Bool())
 }
 
 trait HasTioTopIO {
@@ -108,17 +108,18 @@ class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends C
         data = testValue)
       mem.d.ready := dma_state === s_dma_resp
 
-      val (_, getBits) = edge.Get(
-        fromSource = 0.U,
-        toAddress = address,
-        lgSize = lgBlockBytes)
+      //val (_, getBits) = edge.Get(
+      //  fromSource = 0.U,
+      //  toAddress = address,
+      //  lgSize = lgBlockBytes)
 
-      val putting = true.B
-      when (putting) {
-        mem.a.bits := putBits
-      }.otherwise {
-        mem.a.bits := getBits
-      }
+      //val putting = true.B
+      //when (putting) {
+      //  mem.a.bits := putBits
+      //}.otherwise {
+      //  mem.a.bits := getBits
+      //}
+      mem.a.bits := putBits
 
       when (dma_state === s_dma_init) {
         address := params.dmaBase.U
@@ -137,40 +138,40 @@ class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends C
       }
       // DMA
 
-      val x = Reg(UInt(params.width.W))
-      val y = Wire(new DecoupledIO(UInt(params.width.W)))
-      val tio = Wire(new DecoupledIO(UInt(params.width.W)))
-      val status = Wire(UInt(2.W))
+      //val x = Reg(UInt(params.width.W))
+      //val y = Wire(new DecoupledIO(UInt(params.width.W)))
+      //val tio = Wire(new DecoupledIO(UInt(params.width.W)))
+      //val status = Wire(UInt(2.W))
 
-      val impl_io = {
-        val impl = Module(new TioMMIOChiselModule(params.width))
-        impl.io
-      }
+      //val impl_io = {
+      //  val impl = Module(new TioMMIOChiselModule(params.width))
+      //  impl.io
+      //}
 
-      impl_io.clock := clock
-      impl_io.reset := reset.asBool
+      //impl_io.clock := clock
+      //impl_io.reset := reset.asBool
 
-      impl_io.x := x
-      impl_io.y := y.bits
-      impl_io.input_valid := y.valid
-      y.ready := impl_io.input_ready
+      //impl_io.x := x
+      //impl_io.y := y.bits
+      //impl_io.input_valid := y.valid
+      //y.ready := impl_io.input_ready
 
-      tio.bits := impl_io.tio
-      tio.valid := impl_io.output_valid
-      impl_io.output_ready := tio.ready
+      //tio.bits := impl_io.tio
+      //tio.valid := impl_io.output_valid
+      //impl_io.output_ready := tio.ready
 
-      status := Cat(impl_io.input_ready, impl_io.output_valid)
-      io.tio_busy := impl_io.busy
+      //status := Cat(impl_io.input_ready, impl_io.output_valid)
+      //io.tio_busy := impl_io.busy
 
       registerNode.regmap(
-        0x00 -> Seq(
-          RegField.r(2, status)),               // a read-only status register
-        0x04 -> Seq(
-          RegField.w(params.width, x)),         // a plain, write-only register
-        0x08 -> Seq(
-          RegField.w(params.width, y)),         // write-only, y.valid is set on write
-        0x0C -> Seq(
-          RegField.r(params.width, tio)),       // read-only, tio.ready is set on read
+        //0x00 -> Seq(
+        //  RegField.r(2, status)),               // a read-only status register
+        //0x04 -> Seq(
+        //  RegField.w(params.width, x)),         // a plain, write-only register
+        //0x08 -> Seq(
+        //  RegField.w(params.width, y)),         // write-only, y.valid is set on write
+        //0x0C -> Seq(
+        //  RegField.r(params.width, tio)),       // read-only, tio.ready is set on read
         0x10 -> Seq(
           RegField.r(2, dma_state))             // read-only
         )
@@ -191,9 +192,9 @@ trait CanHavePeripheryTio { this: BaseSubsystem =>
         tio
       }
       val tio_busy = InModuleBody {
-        val busy = IO(Output(Bool())).suggestName("tio_busy")
-        busy := tio.module.io.tio_busy
-        busy
+        //val busy = IO(Output(Bool())).suggestName("tio_busy")
+        //busy := tio.module.io.tio_busy
+        //busy
       }
       Some(tio_busy)
     }
