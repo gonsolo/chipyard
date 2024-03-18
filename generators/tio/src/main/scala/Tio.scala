@@ -4,7 +4,7 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental.{IntParam, BaseModule}
 import freechips.rocketchip.prci._
-import freechips.rocketchip.subsystem.{BaseSubsystem, CacheBlockBytes}
+import freechips.rocketchip.subsystem.{BaseSubsystem, CacheBlockBytes, FBUS, PBUS}
 import org.chipsalliance.cde.config.{Parameters, Field, Config}
 import freechips.rocketchip.diplomacy._
 import freechips.rocketchip.regmapper.{HasRegMap, RegField}
@@ -181,6 +181,8 @@ class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends C
 
 trait CanHavePeripheryTio { this: BaseSubsystem =>
   private val portName = "tio"
+  private val pbus = locateTLBusWrapper(PBUS)
+  private val fbus = locateTLBusWrapper(FBUS)
 
   val tio_busy = p(TioKey) match {
     case Some(params) => {
