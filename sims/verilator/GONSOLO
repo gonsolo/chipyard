@@ -10,15 +10,24 @@
 
 # Tio
 
-# Build Tio
-#make -j20 CONFIG=TioConfig VERILATOR_THREADS=12 NUMACTL=1
+if [ "$1" = "b" ]; then
+	echo "Building Tio"
+	make -j20 CONFIG=TioConfig VERILATOR_THREADS=12 NUMACTL=1
+elif [ "$1" = "r" ]; then
+	echo "Running"
+	# Run example (4s, without LOADMEM 24s)
+	#make -s -j20 CONFIG=TioConfig BINARY=../../tests/tio.riscv run-binary LOADMEM=1
+	make -s -j20 CONFIG=TioConfig BINARY=../../tests/hello.riscv run-binary LOADMEM=1
 
-# Run example (4s, without LOADMEM 24s)
-make -j20 CONFIG=TioConfig BINARY=../../tests/tio.riscv run-binary LOADMEM=1
+	# Run Linux: Slow and no UEFI found
+	#make -s -j20 CONFIG=TioConfig BINARY=../../software/firemarshal/images/firechip/br-base/br-base-bin run-binary LOADMEM=1 TIMEOUT_CYCLES=1000000000
+else
+	echo "Nothing to do"
+fi
 
 # Quick compile for developing
 ## Launch sbt server
-#make CONFIG=TioConfig launch-sbt
+# make CONFIG=TioConfig launch-sbt
 ## List projects in sbt shell
 # In sbt: "projects"
 ## Select tio project
