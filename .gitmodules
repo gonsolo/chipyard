@@ -13,12 +13,13 @@
 [submodule "generators/constellation"]
 	path = generators/constellation
 	url = https://github.com/ucb-bar/constellation.git
-[submodule "generators/cva6"]
-	path = generators/cva6
-	url = https://github.com/ucb-bar/cva6-wrapper.git
+#[submodule "generators/cva6"]
+#	path = generators/cva6
+#	url = https://github.com/ucb-bar/cva6-wrapper.git
 [submodule "generators/diplomacy"]
 	path = generators/diplomacy
 	url = https://github.com/chipsalliance/diplomacy.git
+	ignore = dirty # gonsolo
 [submodule "generators/fft-generator"]
 	path = generators/fft-generator
 	url = https://github.com/ucb-bar/FFTGenerator.git
@@ -40,9 +41,9 @@
 [submodule "generators/mempress"]
 	path = generators/mempress
 	url = https://github.com/ucb-bar/mempress.git
-[submodule "generators/nvdla"]
-	path = generators/nvdla
-	url = https://github.com/ucb-bar/nvdla-wrapper.git
+#[submodule "generators/nvdla"]
+#	path = generators/nvdla
+#	url = https://github.com/ucb-bar/nvdla-wrapper.git
 [submodule "generators/riscv-sodor"]
 	path = generators/riscv-sodor
 	url = https://github.com/ucb-bar/riscv-sodor.git
@@ -73,24 +74,24 @@
 [submodule "software/baremetal-ide"]
 	path = software/baremetal-ide
 	url = https://github.com/ucb-bar/Baremetal-IDE.git
-[submodule "software/coremark"]
-	path = software/coremark
-	url = https://github.com/ucb-bar/coremark-workload.git
+#[submodule "software/coremark"]
+#	path = software/coremark
+#	url = https://github.com/ucb-bar/coremark-workload.git
 [submodule "software/embench/embench-iot"]
 	path = software/embench/embench-iot
 	url = https://github.com/embench/embench-iot.git
 [submodule "software/firemarshal"]
 	path = software/firemarshal
 	url = https://github.com/firesim/FireMarshal.git
-[submodule "software/nvdla-workload"]
-	path = software/nvdla-workload
-	url = https://github.com/ucb-bar/nvdla-workload.git
-[submodule "software/spec2017"]
-	path = software/spec2017
-	url = https://github.com/ucb-bar/spec2017-workload.git
-[submodule "toolchains/esp-tools/esp-tools-feedstock"]
-	path = toolchains/esp-tools/esp-tools-feedstock
-	url = https://github.com/ucb-bar/esp-tools-feedstock.git
+#[submodule "software/nvdla-workload"]
+#	path = software/nvdla-workload
+#	url = https://github.com/ucb-bar/nvdla-workload.git
+#[submodule "software/spec2017"]
+#	path = software/spec2017
+#	url = https://github.com/ucb-bar/spec2017-workload.git
+#[submodule "toolchains/esp-tools/esp-tools-feedstock"]
+#	path = toolchains/esp-tools/esp-tools-feedstock
+#	url = https://github.com/ucb-bar/esp-tools-feedstock.git
 [submodule "toolchains/esp-tools/riscv-isa-sim"]
 	path = toolchains/esp-tools/riscv-isa-sim
 	url = https://github.com/ucb-bar/esp-isa-sim.git
@@ -106,9 +107,9 @@
 [submodule "toolchains/riscv-tools/riscv-isa-sim"]
 	path = toolchains/riscv-tools/riscv-isa-sim
 	url = https://github.com/riscv-software-src/riscv-isa-sim.git
-[submodule "toolchains/riscv-tools/riscv-openocd"]
-	path = toolchains/riscv-tools/riscv-openocd
-	url = https://github.com/riscv/riscv-openocd.git
+#[submodule "toolchains/riscv-tools/riscv-openocd"]
+#	path = toolchains/riscv-tools/riscv-openocd
+#	url = https://github.com/riscv/riscv-openocd.git
 [submodule "toolchains/riscv-tools/riscv-pk"]
 	path = toolchains/riscv-tools/riscv-pk
 	url = https://github.com/riscv-software-src/riscv-pk.git
@@ -148,6 +149,6 @@
 [submodule "tools/torture"]
 	path = tools/torture
 	url = https://github.com/ucb-bar/riscv-torture.git
-[submodule "vlsi/hammer-mentor-plugins"]
-	path = vlsi/hammer-mentor-plugins
-	url = https://github.com/ucb-bar/hammer-mentor-plugins.git
+#[submodule "vlsi/hammer-mentor-plugins"]
+#	path = vlsi/hammer-mentor-plugins
+#	url = https://github.com/ucb-bar/hammer-mentor-plugins.git
