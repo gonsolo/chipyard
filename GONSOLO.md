@@ -1,4 +1,6 @@
-# Conda
+# Notes about working with Chipyard
+
+## Conda
 eval "$(/home/gonsolo/miniforge3/bin/conda shell.bash hook)"
 conda init
 conda init --reverse $SHELL
