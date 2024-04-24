@@ -1,5 +1,12 @@
 # Notes about working with Chipyard
 
+## Overview
+Three things are needed to successfully run a simulation on a Nitefury II:
+1. A bitstream that is flashed onto Nitefury: firesim.mcs or firesim.bit
+2. The simulator: FireSim-rhsresearch_nitefury_ii
+3. A working Linux environment: linux-uniform0-br-base[-bin|.img]
+TODO: How to make them.
+
 ## Conda
 ```bash
 eval "$(/home/gonsolo/miniforge3/bin/conda shell.bash hook)"
