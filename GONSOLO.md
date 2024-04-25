@@ -1,7 +1,9 @@
 # Notes about working with Chipyard
 
 ## Overview
-A few things are needed to successfully run a simulation on a Nitefury II:
+The following notes are for running a full system simulation of a RISC-V system on the latest Arch Linux distribution.
+
+A few things are needed to successfully run a simulation on a [Nitefury II](https://www.amazon.com/dp/B0B9FMBF6C):
 
 1. A bitstream that is flashed onto Nitefury: ```firesim.mcs``` or ```firesim.bit```.
 
