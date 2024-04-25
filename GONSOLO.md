@@ -9,7 +9,7 @@ A few things are needed to successfully run a simulation on a Nitefury II:
 
 2. A working XDMA (and XVSEC) driver.
 
-   Made from my [repository](https://github.com/gonsolo/dma_ip_drivers) updated for kernel 6.8.7.
+   Made from my [repository](https://github.com/gonsolo/dma_ip_drivers/tree/gonsolo) updated for kernel 6.8.7.
 
    The bitstream from 1. has to be flashed onto the Nitefury II. Otherwise the xdma module will fail to load.
 
