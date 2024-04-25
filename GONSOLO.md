@@ -11,7 +11,14 @@ A few things are needed to successfully run a simulation on a Nitefury II:
 
    Made from my [repository](https://github.com/gonsolo/dma_ip_drivers/tree/gonsolo) updated for kernel 6.8.7.
 
-   The bitstream from 1. has to be flashed onto the Nitefury II. Otherwise the xdma module will fail to load.
+   - The bitstream from 1. has to be flashed onto the Nitefury II. Otherwise the xdma module will fail to load.
+   - The kernel has to be booted with kernel parameter ```pci=nomsi'''. Otherwise the xdma module will fail to load.
+   - In branch ```gonsolo```, cd to ```xdma/xdma``` and type ```sudo make -j 10 install```. You should end up
+     with a ```/lib/modules/.../xdma/xdma.ko```.
+   - ```sudo insmod /lib/modules/6.8.7-arch1-1/xdma/xdma.ko poll_mode=1 interrupt_mode=2```. Check lsmod and dmesg
+     whether probing failed. It *must* not!
+   - Cd to ```xvsec``` and type ```sudo make install```. ```sudo modprobe xvsec```. Check dmesg and lsmod.
+     Not sure whether xvsec is actually needed.
 
 3. The simulator: FireSim-rhsresearch_nitefury_ii.
 
