@@ -5,25 +5,24 @@ A few things are needed to successfully run a simulation on a Nitefury II:
 
 1. A bitstream that is flashed onto Nitefury: ```firesim.mcs``` or ```firesim.bit```.
 
-   Made from ```project.tcl```.
+   Made from ```project.tcl```. TODO.
 
-3. A working XDMA (and XVSEC) driver.
+2. A working XDMA (and XVSEC) driver.
 
    Made from my [repository](https://github.com/gonsolo/dma_ip_drivers) updated for kernel 6.8.7.
-   XDMA resides in branch gonsolo, XVSEC in branch gonsolo_xvsec.
 
-   The bitstream from 1. has to be flased onto the Nitefury II. Otherwise the xdma module will fail to load.
+   The bitstream from 1. has to be flashed onto the Nitefury II. Otherwise the xdma module will fail to load.
 
-5. The simulator: FireSim-rhsresearch_nitefury_ii.
+3. The simulator: FireSim-rhsresearch_nitefury_ii.
 
-   Resides in ```sims/firesim/sim```. Have to find out how it's built.
+   Resides in ```sims/firesim/sim```. TODO.
 
    The executable takes the linux kernel and the filesystem image, opens a few bridges via PCI Express to the Nitefury
    and boot the system.
 
-7. A working RISC-V Linux environment:
+4. A working RISC-V Linux environment:
 
-   Resides in ```software/firemarshal```. Have to find out.
+   Resides in ```software/firemarshal```. TODO.
 
    * Kernel: linux-uniform0-br-base-bin
    * Filesystem: linux-uniform0-br-base.img
