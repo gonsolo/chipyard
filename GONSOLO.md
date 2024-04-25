@@ -45,7 +45,7 @@ Sometimes conda is commented out in .bashrc
 
 ## If build-setup.sh step 9 fails:
 ```bash
-sudo chmod ga+r /boo/vmlinuz-6.5.0-17-generic
+sudo chmod ga+r /boot/vmlinuz-6.5.0-17-generic
 ```
 
 ## Environment
