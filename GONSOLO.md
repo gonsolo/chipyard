@@ -9,7 +9,10 @@ A few things are needed to successfully run a simulation on a Nitefury II:
 
 2. A working XDMA (and XVSEC) driver.
 
-   Made from my [repository](https://github.com/gonsolo/dma_ip_drivers/tree/gonsolo) updated for kernel 6.8.7.
+   The simulator from 3. talks to the FPGA via PCI Express with this driver.
+   
+   It is made from my [repository](https://github.com/gonsolo/dma_ip_drivers/tree/gonsolo) updated AMD's XDMA
+   drivers for kernel 6.8.7.
 
    - The bitstream from 1. has to be flashed onto the Nitefury II. Otherwise the xdma module will fail to load.
    - The kernel has to be booted with kernel parameter ```pci=nomsi'''. Otherwise the xdma module will fail to load.
@@ -20,14 +23,14 @@ A few things are needed to successfully run a simulation on a Nitefury II:
    - Cd to ```xvsec``` and type ```sudo make install```. ```sudo modprobe xvsec```. Check dmesg and lsmod.
      Not sure whether xvsec is actually needed.
 
-3. The simulator: FireSim-rhsresearch_nitefury_ii.
+4. The simulator: FireSim-rhsresearch_nitefury_ii.
 
    Resides in ```sims/firesim/sim```. TODO.
 
    The executable takes the linux kernel and the filesystem image, opens a few bridges via PCI Express to the Nitefury
    and boot the system.
 
-4. A working RISC-V Linux environment:
+5. A working RISC-V Linux environment:
 
    Resides in ```software/firemarshal```. TODO.
 
