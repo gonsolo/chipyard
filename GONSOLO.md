@@ -11,7 +11,7 @@ A few things are needed to successfully run a simulation on a Nitefury II:
 
    The simulator from 3. talks to the FPGA via PCI Express with this driver.
    
-   It is made from my [repository](https://github.com/gonsolo/dma_ip_drivers/tree/gonsolo) updated AMD's XDMA
+   It is made from my [repository](https://github.com/gonsolo/dma_ip_drivers/tree/gonsolo) which updated AMD's XDMA
    drivers for kernel 6.8.7.
 
    - The bitstream from 1. has to be flashed onto the Nitefury II. Otherwise the xdma module will fail to load.
