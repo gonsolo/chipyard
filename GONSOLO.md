@@ -39,7 +39,9 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
    The executable takes the linux kernel and the filesystem image, opens a few bridges via PCI Express to the Nitefury
    and boot the system.
 
-5. A working RISC-V Linux environment:
+   It is also built from ```firesim buildbitstream``` in 1.
+
+6. A working RISC-V Linux environment:
 
    Resides in ```software/firemarshal```. TODO.
 
