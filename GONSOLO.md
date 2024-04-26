@@ -12,7 +12,7 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
      - In sims/firesim/sim: ```make PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
    - build_driver
      - In sims/firesim/sim: ```make PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig driver```
-   - ```build_bitstream.sh --cl_dir bla --frequency 50 --strategy TIMING --board rhsresearch_nitefury_ii```
+   - ```build-bitstream.sh --cl_dir bla --frequency 50 --strategy TIMING --board rhsresearch_nitefury_ii```
 
    Made from ```project.tcl```. TODO.
 
