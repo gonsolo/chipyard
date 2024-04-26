@@ -8,9 +8,9 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
 1. A bitstream that is flashed onto Nitefury: ```firesim.mcs``` or ```firesim.bit```.
 
    - replace_rtl
-     - ```make PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
+     - In sims/firesim/sim: ```make PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
    - build_driver
-     - ```make PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig driver```
+     - In sims/firesim/sim: ```make PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig driver```
    - ```build_bitstream.sh --cl_dir bla --frequency 50 --strategy TIMING --board rhsresearch_nitefury_ii```
 
    Made from ```project.tcl```. TODO.
