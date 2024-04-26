@@ -7,6 +7,7 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
 
 1. A bitstream that is flashed onto Nitefury: ```firesim.mcs``` or ```firesim.bit```.
 
+   What ```firesim buildbitstream``` does:
    - replace_rtl
      - In sims/firesim/sim: ```make PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
    - build_driver
