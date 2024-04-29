@@ -7,11 +7,12 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
 
 1. A bitstream that is flashed onto Nitefury: ```firesim.mcs``` or ```firesim.bit```.
 
+   What ```firesim buildbitstream``` does:
    - replace_rtl
      - In sims/firesim/sim: ```make PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
    - build_driver
      - In sims/firesim/sim: ```make PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig driver```
-   - ```build_bitstream.sh --cl_dir bla --frequency 50 --strategy TIMING --board rhsresearch_nitefury_ii```
+   - ```build-bitstream.sh --cl_dir bla --frequency 50 --strategy TIMING --board rhsresearch_nitefury_ii```
 
    Made from ```project.tcl```. TODO.
 
@@ -38,7 +39,9 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
    The executable takes the linux kernel and the filesystem image, opens a few bridges via PCI Express to the Nitefury
    and boot the system.
 
-5. A working RISC-V Linux environment:
+   It is also built from ```firesim buildbitstream``` in 1.
+
+6. A working RISC-V Linux environment:
 
    Resides in ```software/firemarshal```. TODO.
 
