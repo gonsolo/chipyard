@@ -24,7 +24,7 @@ import midas.models.{FASEDBridge, AXI4EdgeSummary, CompleteConfig}
 import firesim.bridges._
 import firesim.configs.MemModelKey
 import tracegen.{TraceGenSystemModuleImp}
-import cva6.CVA6Tile
+//import cva6.CVA6Tile
 
 import chipyard.iocell._
 import chipyard.iobinders._

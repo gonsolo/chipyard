@@ -75,8 +75,8 @@ class DDR3FRFCFSLLC4MB extends FRFCFS16GBQuadRankLLC4MB
 class WithNIC extends icenet.WithIceNIC(inBufFlits = 8192, ctrlQueueDepth = 64)
 
 // Adds a small/large NVDLA to the system
-class WithNVDLALarge extends nvidia.blocks.dla.WithNVDLA("large")
-class WithNVDLASmall extends nvidia.blocks.dla.WithNVDLA("small")
+//class WithNVDLALarge extends nvidia.blocks.dla.WithNVDLA("large")
+//class WithNVDLASmall extends nvidia.blocks.dla.WithNVDLA("small")
 
 // Minimal set of FireSim-related design tweaks - notably discludes FASED, TraceIO, and the BlockDevice
 class WithMinimalFireSimDesignTweaks extends Config(
@@ -327,11 +327,11 @@ class SupernodeFireSimRocketConfig extends Config(
 //**********************************************************************************
 //* CVA6 Configurations
 //*********************************************************************************/
-class FireSimCVA6Config extends Config(
-  new WithDefaultFireSimBridges ++
-  new WithDefaultMemModel ++
-  new WithFireSimConfigTweaks ++
-  new chipyard.CVA6Config)
+//class FireSimCVA6Config extends Config(
+//  new WithDefaultFireSimBridges ++
+//  new WithDefaultMemModel ++
+//  new WithFireSimConfigTweaks ++
+//  new chipyard.CVA6Config)
 
 //**********************************************************************************
 // System with 16 LargeBOOMs that can be simulated with Golden Gate optimizations

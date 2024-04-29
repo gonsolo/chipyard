@@ -7,7 +7,7 @@ import freechips.rocketchip.tile._
 import freechips.rocketchip.subsystem._
 import freechips.rocketchip.rocket.{RocketCoreParams, MulDivParams, DCacheParams, ICacheParams, PgLevels}
 
-import cva6.{CVA6TileAttachParams}
+//import cva6.{CVA6TileAttachParams}
 import sodor.common.{SodorTileAttachParams}
 import ibex.{IbexTileAttachParams}
 import testchipip.cosim.{TracePortKey, TracePortParams}
@@ -31,8 +31,8 @@ class WithTraceIO extends Config((site, here, up) => {
       core = tp.tileParams.core.copy(trace = true)))
     case tp: boom.v4.common.BoomTileAttachParams => tp.copy(tileParams = tp.tileParams.copy(
       core = tp.tileParams.core.copy(trace = true)))
-    case tp: CVA6TileAttachParams => tp.copy(tileParams = tp.tileParams.copy(
-      trace = true))
+    //case tp: CVA6TileAttachParams => tp.copy(tileParams = tp.tileParams.copy(
+    //  trace = true))
     case other => other
   }
   case TracePortKey => Some(TracePortParams())
@@ -44,8 +44,8 @@ class WithNoTraceIO extends Config((site, here, up) => {
       core = tp.tileParams.core.copy(trace = false)))
     case tp: boom.v4.common.BoomTileAttachParams => tp.copy(tileParams = tp.tileParams.copy(
       core = tp.tileParams.core.copy(trace = false)))
-    case tp: CVA6TileAttachParams => tp.copy(tileParams = tp.tileParams.copy(
-      trace = false))
+    //case tp: CVA6TileAttachParams => tp.copy(tileParams = tp.tileParams.copy(
+    //  trace = false))
     case other => other
   }
   case TracePortKey => None
@@ -112,8 +112,8 @@ class WithTilePrefetchers extends Config((site, here, up) => {
       master = TilePrefetchingMasterPortParams(tp.tileParams.tileId, tp.crossingParams.master)))
     case tp: IbexTileAttachParams => tp.copy(crossingParams = tp.crossingParams.copy(
       master = TilePrefetchingMasterPortParams(tp.tileParams.tileId, tp.crossingParams.master)))
-    case tp: CVA6TileAttachParams => tp.copy(crossingParams = tp.crossingParams.copy(
-      master = TilePrefetchingMasterPortParams(tp.tileParams.tileId, tp.crossingParams.master)))
+    //case tp: CVA6TileAttachParams => tp.copy(crossingParams = tp.crossingParams.copy(
+    //  master = TilePrefetchingMasterPortParams(tp.tileParams.tileId, tp.crossingParams.master)))
   }
 })
 
