@@ -70,9 +70,10 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
 18. ```git submodule update --init generators/constellation```
 19. ```git submodule update --init generators/gemmini```
 20. ```git submodule update --init generators/hwacha```
-21. Java must be installed (```yay jre21-openjdk-headless``` or ```apt install default-jre```)
-22. TODO
-23. cd sims/firesim/sim; ```make RISCV=/home/gonsolo/work/chipyard/.conda-env/riscv-tools FIRESIM_ENV_SOURCED=1 PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
+21. ```git submodule update --init generators/ibex```
+22. Java must be installed (```yay jre21-openjdk-headless``` or ```apt install default-jre```)
+23. TODO
+24. cd sims/firesim/sim; ```make RISCV=/home/gonsolo/work/chipyard/.conda-env/riscv-tools FIRESIM_ENV_SOURCED=1 PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
 
 ## Conda
 ```bash
