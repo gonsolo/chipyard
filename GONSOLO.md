@@ -48,6 +48,25 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
    * Kernel: linux-uniform0-br-base-bin
    * Filesystem: linux-uniform0-br-base.img
 
+## Makefile-based workflow
+
+1. Clone Chipyard and cd into it
+2. ```git submodule update --init sims/firesim```
+3. ```git submodule update generators/rocket-chip```
+4. ```git submodule update --init tools/cde```
+5. ```git submodule update --init generators/diplomacy```
+6. ```git submodule update --init generators/hardfloat```
+7. ```git submodule update --init generators/rocket-chip-blocks```
+8. ```git submodule update --init generators/testchipip```
+9. ```git submodule update --init generators/icenet```
+10. ```git submodule update --init generators/boom```
+11. ```git submodule update --init generators/rocket-chip-inclusive-cache```
+12. ```git submodule update --init tools/dsptools```
+13. ```git submodule update --init tools/fixedpoint```
+14. ```git submodule update --init generators/cva6```
+15. TODO
+16. cd sims/firesim/sim; ```make RISCV=/home/gonsolo/work/chipyard/.conda-env/riscv-tools FIRESIM_ENV_SOURCED=1 PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
+
 ## Conda
 ```bash
 eval "$(/home/gonsolo/miniforge3/bin/conda shell.bash hook)"
