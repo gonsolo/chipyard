@@ -64,9 +64,10 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
 12. ```git submodule update --init tools/dsptools```
 13. ```git submodule update --init tools/fixedpoint```
 14. ```git submodule update --init generators/cva6```
-15. Java must be installed (```yay jre21-openjdk-headless``` or ```apt install default-jre```)
-16. TODO
-17. cd sims/firesim/sim; ```make RISCV=/home/gonsolo/work/chipyard/.conda-env/riscv-tools FIRESIM_ENV_SOURCED=1 PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
+15. ```git submodule update --init tools/rocket-dsp-utils```
+16. Java must be installed (```yay jre21-openjdk-headless``` or ```apt install default-jre```)
+17. TODO
+18. cd sims/firesim/sim; ```make RISCV=/home/gonsolo/work/chipyard/.conda-env/riscv-tools FIRESIM_ENV_SOURCED=1 PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
 
 ## Conda
 ```bash
