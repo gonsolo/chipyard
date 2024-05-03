@@ -59,44 +59,7 @@ The three repositories changed are `./chipyard`, `sims/firesim` and `./sims/fire
 5. Java must be installed (```yay jre21-openjdk-headless``` or ```apt install default-jre```)
 6. ```cd sims/firesim/sim; make RISCV=/home/gonsolo/work/chipyard/.conda-env/riscv-tools FIRESIM_ENV_SOURCED=1 PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
 
-## Conda
-```bash
-eval "$(/home/gonsolo/miniforge3/bin/conda shell.bash hook)"
-conda init
-conda init --reverse $SHELL
-conda deactivate
-```
-Sometimes conda is commented out in .bashrc
-
-## If build-setup.sh step 9 fails:
-```bash
-sudo chmod ga+r /boot/vmlinuz-6.5.0-17-generic
-```
-
-## Environment
-```bash
-source ./env.sh
-cd sims/firesim
-source ./sourceme-manager.sh
-```
-
-## Manual setup for firesim enumeratefpgas
-```bash
-cd ~/.ssh; ssh-agent -s > AGENT_VARS; source AGENT_VARS; ssh-add firesim.pem
-source ./envsh; cd sims/firesim; source sourcme-manager.sh
-insmod xdma; modprobe xvsec
-sudo chmod 777 /sys/bus/pci/rescan
-chmod 666 /dev/xdma0_user
-chmod 666 /dev/xdma0_h2c_0 
-chmod 666 /dev/xdma0_c2h_0 
-```
-
-## Once: Generate database manually as Nitefury doesn't survive programming without reboot
-```bash
-sudo /home/gonsolo/FIRESIM_RUNS_DIR/enumerate_fpgas_staging/scripts/generate-fpga-db.py --bitstream ../rhsresearch_nitefury_ii/firesim.bit --driver ../FireSim-rhsresearch_nitefury_ii --out-db-json /opt/firesim-db.json --vivado-bin /tools/Xilinx/Vivado_Lab/2023.2/bin/vivado_lab --hw-server-bin /tools/Xilinx/Vivado_Lab/2023.2/bin/hw_server
-```
-
-Values from above when run manually:
+## Old
 
 > Serial: Digilent/210249BAC8DB
 > BDF: 08:00.0
@@ -116,14 +79,6 @@ Values from above when run manually:
 ## /opt/firesime-db.json
 ```json
 [ { "uid": "Digilent/210249BAC8DB", "device": "xc7a200t_0", "bdf": "08:00.0" } ]
-```
-
-## firesim infraetup: Comment flash_fpga atline 875:
-/home/gonsolo/work/chipyard/sims/firesim/deploy/runtools/run_farm_deploy_managers.py:    def infrasetup_instance(self, uridir: str) -> None:
-
-## XMDA test with Nitefury flashed with RHSResearch Project-0
-```bash
-sudo ./dma_to_device -d /dev/xdma0_h2c_0 -f ../tests/data/datafile0_4K.bin -s 1024 -a 0 -c 1
 ```
 
 ## Run simulation manually
