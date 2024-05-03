@@ -26,7 +26,7 @@ class dmiShuttleCosimConfig extends Config(
   new shuttle.common.WithNShuttleCores ++
   new chipyard.config.AbstractConfig)
 
-class GemminiShuttleConfig extends Config(
-  new gemmini.DefaultGemminiConfig ++                            // use Gemmini systolic array GEMM accel
-  new shuttle.common.WithNShuttleCores ++
-  new chipyard.config.AbstractConfig)
+//class GemminiShuttleConfig extends Config(
+//  new gemmini.DefaultGemminiConfig ++                            // use Gemmini systolic array GEMM accel
+//  new shuttle.common.WithNShuttleCores ++
+//  new chipyard.config.AbstractConfig)
