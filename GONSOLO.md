@@ -48,7 +48,11 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
    * Kernel: linux-uniform0-br-base-bin
    * Filesystem: linux-uniform0-br-base.img
 
-## Makefile-based workflow
+## New Makefile-based workflow
+
+1.``` git clone -b gonsolo --recurse-submodules git@github.com:gonsolo/chipyard.git```
+
+## Old Makefile-based workflow
 
 The three repositories changed are `./chipyard`, `sims/firesim` and `./sims/firesim/platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim`.
 
