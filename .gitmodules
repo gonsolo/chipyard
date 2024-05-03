@@ -132,6 +132,7 @@
 [submodule "tools/cde"]
 	path = tools/cde
 	url = https://github.com/chipsalliance/cde.git
+	ignore = dirty # gonsolo
 [submodule "tools/circt"]
 	path = tools/circt
 	url = https://github.com/llvm/circt.git
