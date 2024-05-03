@@ -51,36 +51,10 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
 ## Makefile-based workflow
 
 1. Clone Chipyard and cd into it
-2. ```git submodule update --init sims/firesim```
-3. ```git submodule update generators/rocket-chip```
-4. ```git submodule update --init tools/cde```
-5. ```git submodule update --init generators/diplomacy```
-6. ```git submodule update --init generators/hardfloat```
-7. ```git submodule update --init generators/rocket-chip-blocks```
-8. ```git submodule update --init generators/testchipip```
-9. ```git submodule update --init generators/icenet```
-10. ```git submodule update --init generators/boom```
-11. ```git submodule update --init generators/rocket-chip-inclusive-cache```
-12. ```git submodule update --init tools/dsptools```
-13. ```git submodule update --init tools/fixedpoint```
-14. ```git submodule update --init generators/cva6```
-15. ```git submodule update --init tools/rocket-dsp-utils```
-16. ```git submodule update --init generators/nvdla```
-17. ```git submodule update --init generators/fft-generator```
-18. ```git submodule update --init generators/constellation```
-19. ```git submodule update --init generators/gemmini```
-20. ```git submodule update --init generators/hwacha```
-21. ```git submodule update --init generators/ibex```
-22. ```git submodule update --init generators/mempress```
-23. ```git submodule update --init generators/caliptra-aes-acc```
-24. ```git submodule update --init generators/rocc-acc-utils```
-25. ```git submodule update --init generators/bar-fetchers```
-26. ```git submodule update --init generators/sha3```
-27. ```git submodule update --init generators/shuttle```
-28. ```git submodule update --init generators/sodor```
-29. Java must be installed (```yay jre21-openjdk-headless``` or ```apt install default-jre```)
-30. TODO
-31. cd sims/firesim/sim; ```make RISCV=/home/gonsolo/work/chipyard/.conda-env/riscv-tools FIRESIM_ENV_SOURCED=1 PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
+2. ```git submodule update --init generators/bar-fetchers generators/boom generators/caliptra-aes-acc generators/constellation generators/cva6 generators/diplomacy generators/fft-generator generators/gemmini generators/hardfloat generators/hwacha generators/ibex generators/icenet generators/mempress generators/nvdla generators/rocc-acc-utils generators/rocket-chip generators/rocket-chip-blocks generators/rocket-chip-inclusive-cache generators/sha3 generators/shuttle generators/riscv-sodor generators/testchipip sims/firesim tools/cde tools/dsptools tools/fixedpoint tools/rocket-dsp-utils```
+3. Java must be installed (```yay jre21-openjdk-headless``` or ```apt install default-jre```)
+4. TODO
+5. cd sims/firesim/sim; ```make RISCV=/home/gonsolo/work/chipyard/.conda-env/riscv-tools FIRESIM_ENV_SOURCED=1 PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
 
 ## Conda
 ```bash
