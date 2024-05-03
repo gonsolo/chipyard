@@ -2,7 +2,7 @@
 
 ## Makefile-based workflow
 
-1.``` git clone -b gonsolo --recurse-submodules git@github.com:gonsolo/chipyard.git```
+1.``` git clone -b gonsolo git@github.com:gonsolo/chipyard.git```
 
 ## Overview
 The following notes are for running a full system simulation of a RISC-V system on the latest Arch Linux distribution.
