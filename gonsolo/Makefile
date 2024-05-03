@@ -9,9 +9,9 @@ DESIGN = FireSim
 TARGET_CONFIG = FireSimRocket1GiBDRAMConfig
 PLATFORM_CONFIG = BaseNitefuryConfig
 
-all: out.mcs
-out.mcs: $(SV)
-	vivado -mode batch -source top.tcl -tclargs $(FREQUENCY) $(STRATEGY)
+all: sv
+#out.mcs: $(SV)
+#	vivado -mode batch -source top.tcl -tclargs $(FREQUENCY) $(STRATEGY)
 
 sv: $(SV)
 $(SV):
