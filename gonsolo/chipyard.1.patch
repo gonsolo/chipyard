@@ -140,3 +140,16 @@ index 1f03202ed..a1674639f 100644
    }
  
    size_t shnum;
+diff --git a/sim/midas/src/main/cc/Makefile b/sim/midas/src/main/cc/Makefile
+index 5a6fe4bb3..ced9c04d4 100644
+--- a/sim/midas/src/main/cc/Makefile
++++ b/sim/midas/src/main/cc/Makefile
+@@ -20,7 +20,7 @@ r_dir = $(abspath ../resources)
+ PLATFORM ?= f1
+ OUT_DIR ?= $(GEN_DIR)
+ 
+-override CXXFLAGS += -Wall -I$(midas_dir) -I$(GEN_DIR)
++override CXXFLAGS += -Wall -I$(midas_dir) -I$(GEN_DIR) -I/usr/include/libdwarf/libdwarf-0
+ override LDFLAGS += -L$(GEN_DIR) -lstdc++ -lpthread -lgmp
+ 
+ DESIGN_V  ?= $(GEN_DIR)/$(GEN_FILE_BASENAME).sv
