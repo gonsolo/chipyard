@@ -50,6 +50,8 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
 
 ## Makefile-based workflow
 
+The three repositories changed are `./chipyard`, `sims/firesim` and `./sims/firesim/platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim`.
+
 1. Clone Chipyard and cd into it
 2. ```git submodule update --init generators/bar-fetchers generators/boom generators/caliptra-aes-acc generators/constellation generators/cva6 generators/diplomacy generators/fft-generator generators/gemmini generators/hardfloat generators/hwacha generators/ibex generators/icenet generators/mempress generators/nvdla generators/rocc-acc-utils generators/rocket-chip generators/rocket-chip-blocks generators/rocket-chip-inclusive-cache generators/sha3 generators/shuttle generators/riscv-sodor generators/testchipip sims/firesim tools/cde tools/dsptools tools/fixedpoint tools/rocket-dsp-utils```
 3. ```cd sims/firesim && git submodule update --init platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim```
