@@ -2,7 +2,8 @@
 
 ## Makefile-based workflow
 
-1.``` git clone -b gonsolo git@github.com:gonsolo/chipyard.git```
+1. ``` git clone -b gonsolo git@github.com:gonsolo/chipyard.git```
+2. ```git submodule update --init generators/bar-fetchers generators/boom generators/caliptra-aes-acc generators/constellation generators/diplomacy generators/fft-generator generators/hardfloat generators/hwacha generators/ibex generators/icenet generators/mempress generators/rocc-acc-utils generators/rocket-chip generators/rocket-chip-blocks generators/rocket-chip-inclusive-cache generators/shuttle generators/riscv-sodor generators/testchipip sims/firesim tools/cde tools/dsptools tools/fixedpoint tools/rocket-dsp-utils```
 
 ## Overview
 The following notes are for running a full system simulation of a RISC-V system on the latest Arch Linux distribution.
