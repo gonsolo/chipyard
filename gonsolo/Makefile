@@ -16,10 +16,10 @@ SV = $(FIRESIM)/sim/generated-src/$(PLATFORM)/$(QUINTUPLET)/$(DESIGN)-generated.
 
 DRIVER =$(FIRESIM)/sim/output/$(PLATFORM)/$(QUINTUPLET)/FireSim-rhsresearch_nitefury_ii
 
-all: driver
+all: out.mcs $(DRIVER)
 
 driver: $(DRIVER)
-$(DRIVER):
+$(DRIVER) $(SV):
 	$(MAKE) -j $(shell nproc) -C ../sims/firesim/sim RISCV=$(RISCV) FIRESIM_ENV_SOURCED=$(FIRESIM_ENV_SOURCED) PLATFORM=$(PLATFORM) TARGET_PROJECT=$(TARGET_PROJECT) DESIGN=$(DESIGN) TARGET_CONFIG=$(TARGET_CONFIG) PLATFORM_CONFIG=$(PLATFORM_CONFIG) replace-rtl
 
 # Vivado MCS file: This is the bitstream the FPGA is programmed with
