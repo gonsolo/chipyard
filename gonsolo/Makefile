@@ -9,7 +9,11 @@ DESIGN = FireSim
 TARGET_CONFIG = FireSimRocket1GiBDRAMConfig
 PLATFORM_CONFIG = BaseNitefuryConfig
 QUINTUPLET = $(PLATFORM)-$(TARGET_PROJECT)-$(DESIGN)-$(TARGET_CONFIG)-$(PLATFORM_CONFIG)
+
+# This is the SOC as System Verilog in one file
 SV = $(FIRESIM)/sim/generated-src/$(PLATFORM)/$(QUINTUPLET)/$(DESIGN)-generated.sv
+
+# Vivado MCS file: This is the bitstream the FPGA is programmed with
 MCS = $(FIRESIM)/platforms/$(PLATFORM)/NiteFury-and-LiteFury-firesim/Sample-Projects/Project-0/cl_$(QUINTUPLET)/Nitefury-II/mcs/out.mcs
 
 all: sv
