@@ -1,1 +1,0 @@
-/home/gonsolo/work/chipyard/sims/firesim/sim/generated-src/rhsresearch_nitefury_ii/rhsresearch_nitefury_ii-firesim-FireSim-FireSimRocket1GiBDRAMConfig-BaseNitefuryConfig/FireSim-generated.sv

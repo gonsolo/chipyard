@@ -4,3 +4,5 @@ out.prm
 project.cache
 vivado.jou
 project
+xsim.dir
+xvlog.pb
