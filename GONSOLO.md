@@ -5,6 +5,7 @@
 ### Prerequisites
 
 - [Nitefury II](https://github.com/RHSResearchLLC/NiteFury-and-LiteFury?tab=readme-ov-file), a $150 FPGA. (Running on [verilator](https://www.veripool.org/verilator) works too but running Linux on it is much too slow).
+- [JTAG HS2 programming cable](https://digilent.com/shop/jtag-hs2-programming-cable), $64.
 - [Java](https://archlinux.org/packages/extra/x86_64/jre-openjdk-headless).
 - [Spike](https://aur.archlinux.org/packages/spike-git).
 - Boot with `pci=nomsi` for XDMA to work.
@@ -15,15 +16,13 @@
 1. ``` git clone -b gonsolo git@github.com:gonsolo/chipyard.git```
 2. ```git submodule update --init generators/bar-fetchers generators/boom generators/caliptra-aes-acc generators/constellation generators/diplomacy generators/fft-generator generators/hardfloat generators/hwacha generators/ibex generators/icenet generators/mempress generators/rocc-acc-utils generators/rocket-chip generators/rocket-chip-blocks generators/rocket-chip-inclusive-cache generators/shuttle generators/riscv-sodor generators/testchipip sims/firesim tools/cde tools/dsptools tools/fixedpoint tools/rocket-dsp-utils```
 3. ```cd sims/firesim && git submodule update --init platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim```
-4. ```cd gonsolo; make```
-
-This results in a driver in `sims/firesim/platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim/Sample-Projects/Project-0/cl_rhsresearch_nitefury_ii-firesim-FireSim-FireSimRocket1GiBDRAMConfig-BaseNitefuryConfig/driver/FireSim-rhsresearch_nitefury_ii` and a FPGA bitstream `out.mcs`.
+4. ```cd gonsolo; make```. This results in a driver called `FireSim-rhsresearch_nitefury_ii` and an FPGA bitstream `out.mcs`.
+5. Program FPGA: Open vivado_lab, "Open Hardware Manager", "Open Target", "Auto connect". Right-clock FPGA and select "Add configuration memory device", choose "s25fl256sxxxxxx0-spi-x1_x2_x4", "yes" to programming, choose "out.mcs" as configuration file, reboot.
 
 ### TODO
 
-1. TODO: Program FPGA with mcs.
-2. TODO: Generate RISC-V Linux and filesystem image to run driver.
-3. TODO: Generate workload.
+1. TODO: Generate RISC-V Linux and filesystem image to run driver.
+2. TODO: Generate workload.
 
 ## Custom forks
 
