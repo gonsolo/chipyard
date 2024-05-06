@@ -15,6 +15,14 @@ This results in a driver in `sims/firesim/platforms/rhsresearch_nitefury_ii/Nite
 2. TODO: Generate RISC-V Linux and filesystem image to run driver.
 3. TODO: Generate workload.
 
+## Custom forks
+
+- gonsolo/chipyard forked from ucb-bar/chipyard
+- gonsolo/testchipip forked from ucb/bar/testchipip
+- gonsolo/firesim forked from firesim/firesim
+- gonsolo/NiteFury-and-LiteFury-firesim forked from firesim/NiteFury-and-LiteFury-firesim
+- gonsolo/dma_ip_drivers forked from Xilinx/dma_ip_drivers
+
 ## Overview
 The following notes are for running a full system simulation of a RISC-V system on the latest Arch Linux distribution.
 
