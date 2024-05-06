@@ -17,7 +17,7 @@
 2. ```git submodule update --init generators/bar-fetchers generators/boom generators/caliptra-aes-acc generators/constellation generators/diplomacy generators/fft-generator generators/hardfloat generators/hwacha generators/ibex generators/icenet generators/mempress generators/rocc-acc-utils generators/rocket-chip generators/rocket-chip-blocks generators/rocket-chip-inclusive-cache generators/shuttle generators/riscv-sodor generators/testchipip sims/firesim tools/cde tools/dsptools tools/fixedpoint tools/rocket-dsp-utils```
 3. ```cd sims/firesim && git submodule update --init platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim```
 4. ```cd gonsolo; make```. This results in a driver called `FireSim-rhsresearch_nitefury_ii` and an FPGA bitstream `out.mcs`.
-5. Program FPGA: Open vivado_lab, "Open Hardware Manager", "Open Target", "Auto connect". Right-clock FPGA and select "Add configuration memory device", choose "s25fl256sxxxxxx0-spi-x1_x2_x4", "yes" to programming, choose "out.mcs" as configuration file, reboot.
+5. Program FPGA: Open vivado_lab, "Open Hardware Manager", "Open Target", "Auto connect". Right-clock FPGA and select "Add configuration memory device", choose "s25fl256sxxxxxx0-spi-x1_x2_x4", "yes" to programming, choose "out.mcs" as configuration file, reboot. `lspci -d 10ee:` should show `Processing accelerators: Xilinx Corporation Device 903f`.
 
 ### TODO
 
