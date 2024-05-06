@@ -9,7 +9,7 @@
 3. ```cd sims/firesim && git submodule update --init platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim```
 4. ```cd gonsolo; make```
 
-This results in a driver in `sims/firesim/platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim/Sample-Projects/Project-0/cl_rhsresearch_nitefury_ii-firesim-FireSim-FireSimRocket1GiBDRAMConfig-BaseNitefuryConfig/driver/FireSim-rhsresearch_nitefury_ii` and a FPGA bitstream in `sims/firesim/platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim/Sample-Projects/Project-0/cl_rhsresearch_nitefury_ii-firesim-FireSim-FireSimRocket1GiBDRAMConfig-BaseNitefuryConfig/Nitefury-II/mcs/out.mcs`.
+This results in a driver in `sims/firesim/platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim/Sample-Projects/Project-0/cl_rhsresearch_nitefury_ii-firesim-FireSim-FireSimRocket1GiBDRAMConfig-BaseNitefuryConfig/driver/FireSim-rhsresearch_nitefury_ii` and a FPGA bitstream `out.mcs`.
 
 1. TODO: Program FPGA with mcs.
 2. TODO: Generate RISC-V Linux and filesystem image to run driver.
