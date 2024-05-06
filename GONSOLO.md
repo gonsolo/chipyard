@@ -2,7 +2,7 @@
 
 ## Makefile-based workflow for Arch Linux
 
-Java must be installed (```yay jre-openjdk-headless```)
+[Java](https://archlinux.org/packages/extra/x86_64/jre-openjdk-headless) must be installed.
 
 [spike-git](https://aur.archlinux.org/packages/spike-git) must be installed with the right flags.
 
