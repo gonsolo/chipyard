@@ -31,6 +31,14 @@ out.mcs: $(DRIVER)
 check_fingerprint:
 	$(DRIVER) +permissive +bus=08:00.0 +check-fingerprint +permissive-off +prog0=none
 
+BR_BASE = ../software/firemarshal/images/firechip/br-base
+BASE_IMG = $(BR_BASE)/br-base.img
+BIN_DWARF = $(BR_BASE)/br-base-bin-dwarf
+BASE_BIN = $(BR_BASE)/br-base-bin
+
+run_simulation:
+	$(DRIVER) +permissive   +macaddr0=00:12:6D:00:00:02 +blkdev0=$(BASE_IMG) +niclog0=niclog0 +blkdev-log0=blkdev-log0  +trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 +dwarf-file-name=$(BIN_DWARF) +autocounter-readrate=0 +autocounter-filename-base=AUTOCOUNTERFILE  +print-start=0 +print-end=-1 +linklatency0=6405 +netbw0=200 +shmemportname0=default  +domain=0x0000 +bus=0x08 +device=0x00 +function=0x0 +bar=0x0 +pci-vendor=0x10ee +pci-device=0x903f +permissive-off +prog0=$(BASE_BIN)
+
 c: clean
 clean:
 	rm -rf project project.cache *.log *.jou $(SV) $(DRIVER) check_fingerprint
