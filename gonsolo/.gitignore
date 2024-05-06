@@ -6,3 +6,5 @@ vivado.jou
 project
 xsim.dir
 xvlog.pb
+heartbeat.csv
+memory_stats0.csv
