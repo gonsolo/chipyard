@@ -1,12 +1,14 @@
-# Notes about working with Chipyard
+# BORG Graphics -- Build your own graphics hardware
 
 ## Makefile-based workflow for Arch Linux
 
 ### Prerequisites
 
+- [Nitefury II](https://github.com/RHSResearchLLC/NiteFury-and-LiteFury?tab=readme-ov-file), a $150 FPGA. (Running on [verilator](https://www.veripool.org/verilator) works too but running Linux on it is much too slow).
 - [Java](https://archlinux.org/packages/extra/x86_64/jre-openjdk-headless).
 - [Spike](https://aur.archlinux.org/packages/spike-git).
 - Boot with `pci=nomsi` for XDMA to work.
+- Vivado from [AMD](https://www.xilinx.com/support/download.html) or [Arch](https://aur.archlinux.org/packages/vivado-lab-edition) for building the bitstream and flashing the Nitefury II.
 
 ### Steps
 
