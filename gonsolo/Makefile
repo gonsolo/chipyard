@@ -1,7 +1,6 @@
 FREQUENCY = 50
 STRATEGY = TIMING
-#RISCV = /home/gonsolo/work/chipyard/.conda-env/riscv-tools
-RISCV =
+RISCV = # Not needed, use spike-git package
 FIRESIM_ENV_SOURCED = 1
 FIRESIM = ../sims/firesim
 PLATFORM = rhsresearch_nitefury_ii
@@ -16,8 +15,10 @@ SV = $(FIRESIM)/sim/generated-src/$(PLATFORM)/$(QUINTUPLET)/$(DESIGN)-generated.
 
 DRIVER =$(FIRESIM)/sim/output/$(PLATFORM)/$(QUINTUPLET)/FireSim-rhsresearch_nitefury_ii
 
-all: out.mcs $(DRIVER)
+#all: out.mcs $(DRIVER)
+all: $(DRIVER)
 
+# The driver is a x86-64 binary that loads the linux kernel and a base image and runs the FPGA via PCI-Express.
 driver: $(DRIVER)
 $(DRIVER) $(SV):
 	$(MAKE) -j $(shell nproc) -C ../sims/firesim/sim RISCV=$(RISCV) FIRESIM_ENV_SOURCED=$(FIRESIM_ENV_SOURCED) PLATFORM=$(PLATFORM) TARGET_PROJECT=$(TARGET_PROJECT) DESIGN=$(DESIGN) TARGET_CONFIG=$(TARGET_CONFIG) PLATFORM_CONFIG=$(PLATFORM_CONFIG) replace-rtl
@@ -25,9 +26,9 @@ $(DRIVER) $(SV):
 # Vivado MCS file: This is the bitstream the FPGA is programmed with
 out.mcs: $(DRIVER)
 	vivado -mode batch -source top.tcl -tclargs $(FREQUENCY) $(STRATEGY)
-
+c: clean
 clean:
 	rm -rf project project.cache *.log *.jou $(SV) $(DRIVER)
 
-.PHONY: all clean driver mcs sv
+.PHONY: all c clean driver
 
