@@ -24,7 +24,8 @@
 ### TODO
 
 1. TODO: Generate RISC-V Linux and filesystem image to run driver.
-2. TODO: Generate workload.
+2. TODO: Run simulation
+3. TODO: Generate workload.
 
 ## Custom forks
 
