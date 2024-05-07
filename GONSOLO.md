@@ -1,19 +1,32 @@
-# Notes about working with Chipyard
+# BORG Graphics -- Build your own graphics hardware
+## (Aka as [Chipyard](https://github.com/ucb-bar/chipyard) and [Firesim](https://github.com/firesim/firesim) without [Conda](https://docs.conda.io/en/latest), [Miniforge](https://github.com/conda-forge/miniforge) and complicated python scripts, running but with the latest [drivers](https://github.com/gonsolo/dma_ip_drivers) and [toolchains](https://aur.archlinux.org/packages/spike-git)!)
 
 ## Makefile-based workflow for Arch Linux
 
-[Java](https://archlinux.org/packages/extra/x86_64/jre-openjdk-headless) and [Spike](https://aur.archlinux.org/packages/spike-git) must be installed.
+### Prerequisites
 
-1. ``` git clone -b gonsolo git@github.com:gonsolo/chipyard.git```
+- [Nitefury II](https://github.com/RHSResearchLLC/NiteFury-and-LiteFury?tab=readme-ov-file), a $150 FPGA. (Running on [verilator](https://www.veripool.org/verilator) works too but running Linux on it is much too slow).
+- [JTAG HS2 programming cable](https://digilent.com/shop/jtag-hs2-programming-cable), $64.
+- [Java](https://archlinux.org/packages/extra/x86_64/jre-openjdk-headless).
+- [Spike](https://aur.archlinux.org/packages/spike-git).
+- Boot with `pci=nomsi` for XDMA to work.
+- Vivado from [AMD](https://www.xilinx.com/support/download.html) or [Arch](https://aur.archlinux.org/packages/vivado-lab-edition) for building the bitstream and flashing the Nitefury II.
+
+### Steps
+
+1. ```git clone -b gonsolo git@github.com:gonsolo/chipyard.git```
 2. ```git submodule update --init generators/bar-fetchers generators/boom generators/caliptra-aes-acc generators/constellation generators/diplomacy generators/fft-generator generators/hardfloat generators/hwacha generators/ibex generators/icenet generators/mempress generators/rocc-acc-utils generators/rocket-chip generators/rocket-chip-blocks generators/rocket-chip-inclusive-cache generators/shuttle generators/riscv-sodor generators/testchipip sims/firesim tools/cde tools/dsptools tools/fixedpoint tools/rocket-dsp-utils```
 3. ```cd sims/firesim && git submodule update --init platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim```
-4. ```cd gonsolo; make```
+4. ```cd gonsolo; make```. This results in a driver called `FireSim-rhsresearch_nitefury_ii` and an FPGA bitstream `out.mcs`.
+5. Program FPGA: Open vivado_lab, "Open Hardware Manager", "Open Target", "Auto connect". Right-clock FPGA and select "Add configuration memory device", choose "s25fl256sxxxxxx0-spi-x1_x2_x4", "yes" to programming, choose "out.mcs" as configuration file, reboot. `lspci -d 10ee:` should show `Processing accelerators: Xilinx Corporation Device 903f`.
+6. `git clone https://github.com/gonsolo/dma_ip_drivers`, `cd xdma/xdma`, `sudo make clean install`. `sudo rmmod xdma`, `sudo modprobe xdma poll_mode=1 interrupt_mode=2`. Make sure the driver loaded with `dmesg`; `xdma:probe_one: pdev 0x000000003afdbfb6, err -22.` is bad, `xdma:cdev_xvc_init: xcdev 0x000000001f4e84d5, bar 0, offset 0x40000.` is good. Also make sure there are device files `ls /dev/xdma_*`, and can be read/written to `sudo chmod a+rw /dev/xdma*`.
+7. Install `riscv64-linux-gnu-gcc`, `mkdir ~/bin`, add `~/bin` to your PATH, for all of (ar, gcc, ld, nm, objcopy, objdump, strip) link /usr/bin/riscv64-linux-gnu-x to ~/bin/riscv64-unknown-linux-gnu-x.
+8. In `software/firemarshal`, `./init-submodules.sh`, in gonsolo `make distro`. This gives you a RISC-V Linux kernel at `images/firechip/br-base/br-base-bin` and a root filesystem at `images/firechip/br-base/br-base.img`.
+9. `make run_simulation`.
 
-This results in a driver in `sims/firesim/platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim/Sample-Projects/Project-0/cl_rhsresearch_nitefury_ii-firesim-FireSim-FireSimRocket1GiBDRAMConfig-BaseNitefuryConfig/driver/FireSim-rhsresearch_nitefury_ii` and a FPGA bitstream `out.mcs`.
+### TODO
 
-1. TODO: Program FPGA with mcs.
-2. TODO: Generate RISC-V Linux and filesystem image to run driver.
-3. TODO: Generate workload.
+1. TODO: Generate workload.
 
 ## Custom forks
 
@@ -71,18 +84,7 @@ A few things are needed to successfully run a simulation on a [Nitefury II](http
    * Kernel: linux-uniform0-br-base-bin
    * Filesystem: linux-uniform0-br-base.img
 
-## Old Makefile-based workflow
-
-The three repositories changed are `./chipyard`, `sims/firesim` and `./sims/firesim/platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim`.
-
-1. Clone Chipyard and cd into it
-2. ```git submodule update --init generators/bar-fetchers generators/boom generators/caliptra-aes-acc generators/constellation generators/cva6 generators/diplomacy generators/fft-generator generators/gemmini generators/hardfloat generators/hwacha generators/ibex generators/icenet generators/mempress generators/nvdla generators/rocc-acc-utils generators/rocket-chip generators/rocket-chip-blocks generators/rocket-chip-inclusive-cache generators/sha3 generators/shuttle generators/riscv-sodor generators/testchipip sims/firesim tools/cde tools/dsptools tools/fixedpoint tools/rocket-dsp-utils```
-3. ```cd sims/firesim && git submodule update --init platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim```
-4. Apply the patch `chipyard.1.patch`
-5. Java must be installed (```yay jre21-openjdk-headless``` or ```apt install default-jre```)
-6. ```cd sims/firesim/sim; make RISCV=/home/gonsolo/work/chipyard/.conda-env/riscv-tools FIRESIM_ENV_SOURCED=1 PLATFORM=rhsresearch_nitefury_ii TARGET_PROJECT=firesim DESIGN=FireSim TARGET_CONFIG=FireSimRocket1GiBDRAMConfig PLATFORM_CONFIG=BaseNitefuryConfig replace-rtl```
-
-## Old
+## Old random notes
 
 > Serial: Digilent/210249BAC8DB
 > BDF: 08:00.0
