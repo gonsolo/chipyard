@@ -36,6 +36,9 @@
 - gonsolo/NiteFury-and-LiteFury-firesim forked from firesim/NiteFury-and-LiteFury-firesim
 - gonsolo/dma_ip_drivers forked from Xilinx/dma_ip_drivers
 - gonsolo/linux for merged firesim and mainline kernels
+- gonsolo/iceblk-driver
+- gonsolo/icenet-driver
+- gonsolo/FireMarshal
 
 ## Overview
 The following notes are for running a full system simulation of a RISC-V system on the latest Arch Linux distribution.
