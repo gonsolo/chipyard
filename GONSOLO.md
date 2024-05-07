@@ -21,7 +21,7 @@
 5. Program FPGA: Open vivado_lab, "Open Hardware Manager", "Open Target", "Auto connect". Right-clock FPGA and select "Add configuration memory device", choose "s25fl256sxxxxxx0-spi-x1_x2_x4", "yes" to programming, choose "out.mcs" as configuration file, reboot. `lspci -d 10ee:` should show `Processing accelerators: Xilinx Corporation Device 903f`.
 6. `git clone https://github.com/gonsolo/dma_ip_drivers`, `cd xdma/xdma`, `sudo make clean install`. `sudo rmmod xdma`, `sudo modprobe xdma poll_mode=1 interrupt_mode=2`. Make sure the driver loaded with `dmesg`; `xdma:probe_one: pdev 0x000000003afdbfb6, err -22.` is bad, `xdma:cdev_xvc_init: xcdev 0x000000001f4e84d5, bar 0, offset 0x40000.` is good. Also make sure there are device files `ls /dev/xdma_*`, and can be read/written to `sudo chmod a+rw /dev/xdma*`.
 7. Install `riscv64-linux-gnu-gcc`, `mkdir ~/bin`, add `~/bin` to your PATH, for all of (ar, gcc, ld, nm, objcopy, objdump, strip) link /usr/bin/riscv64-linux-gnu-x to ~/bin/riscv64-unknown-linux-gnu-x.
-8. `cd software firemarshal`, `./init-submodules.sh`, `./marshal -v build br-base.json`. This gives you a RISC-V Linux kernel at `images/firechip/br-base/br-base-bin` and a root filesystem at `images/firechip/br-base/br-base.img`.
+8. In `software/firemarshal`, `./init-submodules.sh`, in gonsolo `make distro`. This gives you a RISC-V Linux kernel at `images/firechip/br-base/br-base-bin` and a root filesystem at `images/firechip/br-base/br-base.img`.
 9. `make run_simulation`.
 
 ### TODO
