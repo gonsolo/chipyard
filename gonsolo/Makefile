@@ -21,7 +21,7 @@ all: $(DRIVER)
 
 driver: $(DRIVER)
 $(DRIVER) $(SV):
-	$(MAKE) -j $(shell nproc) -C ../sims/firesim/sim RISCV=$(RISCV) FIRESIM_ENV_SOURCED=$(FIRESIM_ENV_SOURCED) PLATFORM=$(PLATFORM) TARGET_PROJECT=$(TARGET_PROJECT) DESIGN=$(DESIGN) TARGET_CONFIG=$(TARGET_CONFIG) PLATFORM_CONFIG=$(PLATFORM_CONFIG) replace-rtl
+	$(MAKE) -j $(shell nproc) -C $(FIRESIM)/sim RISCV=$(RISCV) FIRESIM_ENV_SOURCED=$(FIRESIM_ENV_SOURCED) PLATFORM=$(PLATFORM) TARGET_PROJECT=$(TARGET_PROJECT) DESIGN=$(DESIGN) TARGET_CONFIG=$(TARGET_CONFIG) PLATFORM_CONFIG=$(PLATFORM_CONFIG) replace-rtl
 
 # Vivado MCS file: This is the bitstream the FPGA is programmed with
 out.mcs: $(DRIVER)
@@ -32,7 +32,8 @@ check_fingerprint:
 	$(DRIVER) +permissive +bus=08:00.0 +check-fingerprint +permissive-off +prog0=none
 
 FIREMARSHAL = ../software/firemarshal
-BR_BASE = $(FIREMARSHAL)/images/firechip/br-base
+FIRECHIP = $(FIREMARSHAL)/images/firechip
+BR_BASE = $(FIRECHIP)/br-base
 BASE_IMG = $(BR_BASE)/br-base.img
 BIN_DWARF = $(BR_BASE)/br-base-bin-dwarf
 BASE_BIN = $(BR_BASE)/br-base-bin
@@ -47,9 +48,18 @@ clean_distro_kernel:
 run_simulation:
 	$(DRIVER) +permissive   +macaddr0=00:12:6D:00:00:02 +blkdev0=$(BASE_IMG) +niclog0=niclog0 +blkdev-log0=blkdev-log0  +trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 +dwarf-file-name=$(BIN_DWARF) +autocounter-readrate=0 +autocounter-filename-base=AUTOCOUNTERFILE  +print-start=0 +print-end=-1 +linklatency0=6405 +netbw0=200 +shmemportname0=default  +domain=0x0000 +bus=0x08 +device=0x00 +function=0x0 +bar=0x0 +pci-vendor=0x10ee +pci-device=0x903f +permissive-off +prog0=$(BASE_BIN)
 
+WORKLOADS = $(FIRESIM)/deploy/workloads
+
+POWEROFF_IMG = $(WORKLOADS)/linux-poweroff/poweroffnode.ext2
+
+make_poweroff:
+	$(MAKE) -C $(WORKLOADS) linux-poweroff
+run_poweroff: make_poweroff
+	$(DRIVER) +permissive   +macaddr0=00:12:6D:00:00:02 +blkdev0=$(POWEROFF_IMG) +niclog0=niclog0 +blkdev-log0=blkdev-log0  +trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 +dwarf-file-name=$(BIN_DWARF) +autocounter-readrate=0 +autocounter-filename-base=AUTOCOUNTERFILE  +print-start=0 +print-end=-1 +linklatency0=6405 +netbw0=200 +shmemportname0=default  +domain=0x0000 +bus=0x08 +device=0x00 +function=0x0 +bar=0x0 +pci-vendor=0x10ee +pci-device=0x903f +permissive-off +prog0=$(BASE_BIN)
+
 c: clean
 clean:
 	rm -rf project project.cache *.log *.jou $(SV) $(DRIVER) check_fingerprint
 
-.PHONY: all c clean clean_distro_kernel distro driver
+.PHONY: all c clean clean_distro_kernel distro driver make_poweroff run_poweroff run_simulation
 
