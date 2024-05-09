@@ -30,15 +30,15 @@
 
 ## Custom forks
 
-- gonsolo/chipyard forked from ucb-bar/chipyard
-- gonsolo/testchipip forked from ucb/bar/testchipip
-- gonsolo/firesim forked from firesim/firesim
-- gonsolo/NiteFury-and-LiteFury-firesim forked from firesim/NiteFury-and-LiteFury-firesim
-- gonsolo/dma_ip_drivers forked from Xilinx/dma_ip_drivers
-- gonsolo/linux for merged firesim and mainline kernels
-- gonsolo/iceblk-driver
-- gonsolo/icenet-driver
-- gonsolo/FireMarshal
+- [chipyard](https://github.com/gonsolo/chipyard)
+- [testchipip](https://github.com/gonsolo/testchipip)
+- [firesim](https://github.com/gonsolo/firesim)
+- [NiteFury-and-LiteFury-firesim](https://github.com/gonsolo/NiteFury-and-LiteFury-firesim)
+- [dma_ip_drivers](https://github.com/gonsolo/dma_ip_drivers)
+- [linux](https://github.com/gonsolo/linux)
+- [iceblk-driver](https://github.com/gonsolo/iceblk-driver)
+- [icenet-driver](https://github.com/gonsolo/icenet-driver)
+- [FireMarshal](https://github.com/gonsolo/FireMarshal)
 
 ## Overview
 The following notes are for running a full system simulation of a RISC-V system on the latest Arch Linux distribution.
