@@ -141,7 +141,7 @@ CONFIG.axil_master_prefetchable {true}
 
 ## Misc
 
-For jumping to definition in Scala code install bloop `yay bloop` and metals `yay metals`, and in the root directory `sbt bloopInstall`. It works only when vim ist started from the root directory.
+For jumping to definition in Scala code install bloop `yay bloop` and metals `yay metals`, and in the chipyard and chipyard/sims/firesim/sim directories run `sbt bloopInstall`. It works only when vim ist started from the root directory.
 Put this in your `.vimrc` and run `PlugInstall` in vim:
 
 ```
