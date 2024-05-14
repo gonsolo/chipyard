@@ -29,9 +29,6 @@
 [submodule "generators/hardfloat"]
 	path = generators/hardfloat
 	url = https://github.com/ucb-bar/berkeley-hardfloat.git
-[submodule "generators/hwacha"]
-	path = generators/hwacha
-	url = https://github.com/ucb-bar/hwacha.git
 [submodule "generators/ibex"]
 	path = generators/ibex
 	url = https://github.com/ucb-bar/ibex-wrapper.git
@@ -93,15 +90,6 @@
 #[submodule "toolchains/esp-tools/esp-tools-feedstock"]
 #	path = toolchains/esp-tools/esp-tools-feedstock
 #	url = https://github.com/ucb-bar/esp-tools-feedstock.git
-[submodule "toolchains/esp-tools/riscv-isa-sim"]
-	path = toolchains/esp-tools/riscv-isa-sim
-	url = https://github.com/ucb-bar/esp-isa-sim.git
-[submodule "toolchains/esp-tools/riscv-pk"]
-	path = toolchains/esp-tools/riscv-pk
-	url = https://github.com/riscv-software-src/riscv-pk.git
-[submodule "toolchains/esp-tools/riscv-tests"]
-	path = toolchains/esp-tools/riscv-tests
-	url = https://github.com/ucb-bar/esp-tests.git
 [submodule "toolchains/libgloss"]
 	path = toolchains/libgloss
 	url = https://github.com/ucb-bar/libgloss-htif.git
@@ -136,11 +124,11 @@
 [submodule "tools/circt"]
 	path = tools/circt
 	url = https://github.com/llvm/circt.git
-[submodule "tools/dsptools"]
-	path = tools/dsptools
+[submodule "tools/dsptools-fixedpoint"]
+	path = tools/dsptools-chisel3
 	url = https://github.com/ucb-bar/dsptools.git
-[submodule "tools/fixedpoint"]
-	path = tools/fixedpoint
+[submodule "tools/fixedpoint-chisel3"]
+	path = tools/fixedpoint-chisel3
 	url = https://github.com/ucb-bar/fixedpoint.git
 [submodule "tools/install-circt"]
 	path = tools/install-circt
@@ -154,3 +142,6 @@
 #[submodule "vlsi/hammer-mentor-plugins"]
 #	path = vlsi/hammer-mentor-plugins
 #	url = https://github.com/ucb-bar/hammer-mentor-plugins.git
+[submodule "tools/midas-targetutils"]
+	path = tools/midas-targetutils
+	url = https://github.com/firesim/midas-targetutils.git

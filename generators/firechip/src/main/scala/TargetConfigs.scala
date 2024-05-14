@@ -374,3 +374,11 @@ class FireSimLargeBoomCospikeConfig extends Config(
   new WithDefaultMemModel ++
   new WithFireSimConfigTweaks++
   new chipyard.LargeBoomV3Config)
+
+class FireSimLargeBoomSV39CospikeConfig extends Config(
+  new firesim.firesim.WithCospikeBridge ++
+  new WithDefaultFireSimBridges ++
+  new WithDefaultMemModel ++
+  new WithFireSimConfigTweaks++
+  new chipyard.config.WithSV39 ++
+  new chipyard.LargeBoomV3Config)
