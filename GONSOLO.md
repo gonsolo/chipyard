@@ -138,3 +138,42 @@ Enable MSI (not needed) ```setpci -s 08:00.0 4a.w=1```
 CONFIG.axil_master_64bit_en {true}
 CONFIG.axil_master_prefetchable {true}
 ```
+
+## Misc
+
+For jumping to definition in Scala code install bloop `yay bloop` and metals `yay metals`, and in the chipyard and chipyard/sims/firesim/sim directories run `sbt bloopInstall`. It works only when vim ist started from the root directory.
+Put this in your `.vimrc` and run `PlugInstall` in vim:
+
+```
+source /usr/share/vim/vimfiles/plugin/supertab.vim
+```
+
+```
+call plug#begin()
+        " Swift Language Server Protocol
+        Plug 'dense-analysis/ale'
+        Plug 'prabirshrestha/vim-lsp'
+
+        " Shaders
+        Plug 'tikhomirov/vim-glsl'
+call plug#end()
+```
+```
+if executable('metals')
+  au User lsp_setup call lsp#register_server({
+       \  'name': 'Scala Language Server',
+       \  'cmd': {server_info->['metals']},
+       \  'initialization_options': { 'isHttpEnabled': 'true' },
+       \  'whitelist': ['scala'],
+       \ })
+endif
+```
+```
+if executable('sourcekit-lsp')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'sourcekit-lsp',
+        \ 'cmd': {server_info->['sourcekit-lsp']},
+        \ 'whitelist': ['scala'],
+        \ })
+endif
+```
