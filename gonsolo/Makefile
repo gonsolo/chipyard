@@ -6,7 +6,8 @@ FIRESIM = ../sims/firesim
 PLATFORM = rhsresearch_nitefury_ii
 TARGET_PROJECT = firesim
 DESIGN = FireSim
-TARGET_CONFIG = FireSimRocket1GiBDRAMConfig
+#TARGET_CONFIG = FireSimRocket1GiBDRAMConfig
+TARGET_CONFIG = BorgConfig
 PLATFORM_CONFIG = BaseNitefuryConfig
 QUINTUPLET = $(PLATFORM)-$(TARGET_PROJECT)-$(DESIGN)-$(TARGET_CONFIG)-$(PLATFORM_CONFIG)
 
@@ -68,9 +69,15 @@ make_borg:
 run_borg: make_borg
 	$(DRIVER) $(DRIVER_FLAGS) +blkdev0=$(BORG_IMG)
 
+BORG_TIO_IMG = $(WORKLOADS)/borg-tio/borgtionode.ext2
+make_borg_tio:
+	$(MAKE) -C $(WORKLOADS) borg-tio
+run_borg_tio: make_borg_tio
+	$(DRIVER) $(DRIVER_FLAGS) +blkdev0=$(BORG_TIO_IMG)
+
 c: clean
 clean:
 	rm -rf project project.cache *.log *.jou $(SV) $(DRIVER) check_fingerprint
 
-.PHONY: all c clean clean_distro_kernel distro driver make_borg make_poweroff run_poweroff run_simulation xdma
+.PHONY: all c clean clean_distro_kernel distro driver make_borg make_borg_tio make_poweroff run_poweroff run_simulation xdma
 
