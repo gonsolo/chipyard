@@ -234,6 +234,10 @@ class FireSimRocket1GiBDRAMConfig extends Config(
   new freechips.rocketchip.subsystem.WithExtMemSize((1 << 30) * 1L) ++
   new FireSimRocketConfig)
 
+class BorgConfig extends Config(
+  new tio.WithTio ++
+  new FireSimRocket1GiBDRAMConfig)
+
 class FireSimRocketMMIOOnly1GiBDRAMConfig extends Config(
   new freechips.rocketchip.subsystem.WithExtMemSize((1 << 30) * 1L) ++
   new FireSimRocketMMIOOnlyConfig)
