@@ -177,3 +177,6 @@ if executable('sourcekit-lsp')
         \ })
 endif
 ```
+
+## Toolchain
+Download `https://github.com/gonsolo/chisel`, switch to branch `gonsolo`, `sbt unipublish/publishLocal`.
