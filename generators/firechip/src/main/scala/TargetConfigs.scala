@@ -235,7 +235,7 @@ class FireSimRocket1GiBDRAMConfig extends Config(
   new FireSimRocketConfig)
 
 class BorgConfig extends Config(
-  new tio.WithTio ++
+  new borg.WithBorg ++
   new FireSimRocket1GiBDRAMConfig)
 
 class FireSimRocketMMIOOnly1GiBDRAMConfig extends Config(

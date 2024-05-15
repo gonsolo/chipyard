@@ -1,4 +1,4 @@
-package tio
+package borg
 
 import chisel3._
 import chisel3.util._
@@ -11,15 +11,15 @@ import freechips.rocketchip.regmapper.{HasRegMap, RegField}
 import freechips.rocketchip.tilelink._
 import freechips.rocketchip.util.UIntIsOneOf
 
-case class TioParams(
+case class BorgParams(
   address: BigInt = 0x4000,
   width: Int = 32,
   dmaBase: BigInt = 0x88000000L,
   dmaSize: BigInt = 0x1000)
 
-case object TioKey extends Field[Option[TioParams]](None)
+case object BorgKey extends Field[Option[BorgParams]](None)
 
-class TioIO(val w: Int) extends Bundle {
+class BorgIO(val w: Int) extends Bundle {
   val clock = Input(Clock())
   val reset = Input(Bool())
   val input_ready = Output(Bool())
@@ -28,29 +28,29 @@ class TioIO(val w: Int) extends Bundle {
   val y = Input(UInt(w.W))
   val output_ready = Input(Bool())
   val output_valid = Output(Bool())
-  val tio = Output(UInt(w.W))
+  val borg = Output(UInt(w.W))
   val busy = Output(Bool())
 }
 
-class TioTopIO extends Bundle {
-  //val tio_busy = Output(Bool())
+class BorgTopIO extends Bundle {
+  //val borg_busy = Output(Bool())
 }
 
-trait HasTioTopIO {
-  def io: TioTopIO
+trait HasBorgTopIO {
+  def io: BorgTopIO
 }
 
-class TioMMIOChiselModule(val w: Int) extends Module {
-  val io = IO(new TioIO(w))
+class BorgMMIOChiselModule(val w: Int) extends Module {
+  val io = IO(new BorgIO(w))
   val s_idle :: s_run :: s_done :: Nil = Enum(3)
 
   val state = RegInit(s_idle)
   val tmp   = Reg(UInt(w.W))
-  val tio   = Reg(UInt(w.W))
+  val borg   = Reg(UInt(w.W))
 
   io.input_ready := state === s_idle
   io.output_valid := state === s_done
-  io.tio := tio
+  io.borg := borg
 
   when (state === s_idle && io.input_valid) {
     state := s_run
@@ -61,30 +61,30 @@ class TioMMIOChiselModule(val w: Int) extends Module {
   }
 
   when (state === s_idle && io.input_valid) {
-    tio := io.x
+    borg := io.x
     tmp := io.y
   } .elsewhen (state === s_run) {
-    when (tio > tmp) {
-      tio := tio - tmp
+    when (borg > tmp) {
+      borg := borg - tmp
     } .otherwise {
-      tmp := tmp - tio
+      tmp := tmp - borg 
     }
   }
 
   io.busy := state =/= s_idle
 }
 
-class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends ClockSinkDomain(ClockSinkParameters())(p) {
+class BorgTL(params: BorgParams, beatBytes: Int)(implicit p: Parameters) extends ClockSinkDomain(ClockSinkParameters())(p) {
 
-  val device = new SimpleDevice("tio", Seq("ucbbar,tio"))
+  val device = new SimpleDevice("borgDevice", Seq("ucbbar,borg"))
   val registerNode = TLRegisterNode(Seq(AddressSet(params.address, 4096-1)), device, "reg/control", beatBytes=beatBytes)
   val clientNode = TLClientNode(Seq(TLMasterPortParameters.v1(Seq(TLMasterParameters.v1(name = "dma-test", sourceId = IdRange(0, 1))))))
 
-  override lazy val module = new TioImpl
+  override lazy val module = new BorgImpl
 
-  class TioImpl extends Impl with HasTioTopIO {
+  class BorgImpl extends Impl with HasBorgTopIO {
 
-    val io = IO(new TioTopIO)
+    val io = IO(new BorgTopIO)
 
     // DMA
     val (mem, edge) = clientNode.out(0)
@@ -140,11 +140,11 @@ class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends C
 
       //val x = Reg(UInt(params.width.W))
       //val y = Wire(new DecoupledIO(UInt(params.width.W)))
-      //val tio = Wire(new DecoupledIO(UInt(params.width.W)))
+      //val borg = Wire(new DecoupledIO(UInt(params.width.W)))
       //val status = Wire(UInt(2.W))
 
       //val impl_io = {
-      //  val impl = Module(new TioMMIOChiselModule(params.width))
+      //  val impl = Module(new BorgMMIOChiselModule(params.width))
       //  impl.io
       //}
 
@@ -156,12 +156,12 @@ class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends C
       //impl_io.input_valid := y.valid
       //y.ready := impl_io.input_ready
 
-      //tio.bits := impl_io.tio
-      //tio.valid := impl_io.output_valid
-      //impl_io.output_ready := tio.ready
+      //borg.bits := impl_io.borg
+      //borg.valid := impl_io.output_valid
+      //impl_io.output_ready := borg.ready
 
       //status := Cat(impl_io.input_ready, impl_io.output_valid)
-      //io.tio_busy := impl_io.busy
+      //io.borg_busy := impl_io.busy
 
       registerNode.regmap(
         //0x00 -> Seq(
@@ -171,7 +171,7 @@ class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends C
         //0x08 -> Seq(
         //  RegField.w(params.width, y)),         // write-only, y.valid is set on write
         //0x0C -> Seq(
-        //  RegField.r(params.width, tio)),       // read-only, tio.ready is set on read
+        //  RegField.r(params.width, borg)),       // read-only, borg.ready is set on read
         0x10 -> Seq(
           RegField.r(2, dma_state))             // read-only
         )
@@ -179,31 +179,31 @@ class TioTL(params: TioParams, beatBytes: Int)(implicit p: Parameters) extends C
   }
 }
 
-trait CanHavePeripheryTio { this: BaseSubsystem =>
-  private val portName = "tio"
+trait CanHavePeripheryBorg { this: BaseSubsystem =>
+  private val portName = "borgPort"
   private val pbus = locateTLBusWrapper(PBUS)
   private val fbus = locateTLBusWrapper(FBUS)
 
-  val tio_busy = p(TioKey) match {
+  val borg_busy = p(BorgKey) match {
     case Some(params) => {
-      val tio = {
-        val tio = LazyModule(new TioTL(params, pbus.beatBytes)(p))
-        tio.clockNode := pbus.fixedClockNode
-        pbus.coupleTo(portName) { tio.registerNode := TLFragmenter(pbus.beatBytes, pbus.blockBytes) := _ }
-        fbus.coupleFrom("dma-test") { _ := tio.clientNode }
-        tio
+      val borg = {
+        val borg = LazyModule(new BorgTL(params, pbus.beatBytes)(p))
+        borg.clockNode := pbus.fixedClockNode
+        pbus.coupleTo(portName) { borg.registerNode := TLFragmenter(pbus.beatBytes, pbus.blockBytes) := _ }
+        fbus.coupleFrom("dma-test") { _ := borg.clientNode }
+        borg
       }
-      val tio_busy = InModuleBody {
-        //val busy = IO(Output(Bool())).suggestName("tio_busy")
-        //busy := tio.module.io.tio_busy
+      val borg_busy = InModuleBody {
+        //val busy = IO(Output(Bool())).suggestName("borg_busy")
+        //busy := borg.module.io.borg_busy
         //busy
       }
-      Some(tio_busy)
+      Some(borg_busy)
     }
     case None => None
   }
 }
 
-class WithTio() extends Config((site, here, up) => {
-  case TioKey => Some(TioParams())
+class WithBorg() extends Config((site, here, up) => {
+  case BorgKey => Some(BorgParams())
 })
