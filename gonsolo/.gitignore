@@ -2,7 +2,6 @@ out.bin
 out.mcs
 out.prm
 project.cache
-vivado.jou
 project
 xsim.dir
 xvlog.pb
@@ -10,3 +9,4 @@ heartbeat.csv
 memory_stats0.csv
 blkdev-log0
 latency_histogram.csv
+*.jou
