@@ -36,6 +36,11 @@ $(SV) $(DRIVER):
 mcs: $(MCS)
 $(MCS): $(DRIVER)
 	ln -sf $(FIRESIM)/platforms/$(PLATFORM)/NiteFury-and-LiteFury-firesim/Sample-Projects/Project-0/cl_$(QUINTUPLET)/Nitefury-II/project/project.srcs .
+	cp $(FIRESIM)/platforms/$(PLATFORM)/NiteFury-and-LiteFury-firesim/Sample-Projects/Project-0/cl_firesim/common/HDL/CodeBlinker.v project.srcs/sources_1/imports/HDL/
+	cp ../sims/firesim/platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim/Sample-Projects/Project-0/cl_firesim/Nitefury-II/project/project.srcs/sources_1/imports/HDL/firesim_wrapper.v project.srcs/sources_1/imports/HDL/
+	cp ../sims/firesim/platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim/Sample-Projects/Project-0/cl_firesim/Nitefury-II/project/project.srcs/sources_1/imports/HDL/dna_reader.v project.srcs/sources_1/imports/HDL/
+	cp ../sims/firesim/platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim/Sample-Projects/Project-0/cl_firesim/Nitefury-II/project/project.srcs/sources_1/imports/HDL/user_efuse.v project.srcs/sources_1/imports/HDL/
+
 	vivado -mode batch -source top.tcl -tclargs $(FREQUENCY) $(STRATEGY)
 
 # The permissions have to be set for non-root users: sudo chmod a+rw /dev/xdma0_*
@@ -87,7 +92,7 @@ run_borg_tio: make_borg_tio
 
 c: clean
 clean:
-	rm -rf project project.cache *.log *.jou $(SV) $(DRIVER) check_fingerprint $(MCS)
+	rm -rf project project.cache *.log *.jou $(SV) $(DRIVER) check_fingerprint $(MCS) project.srcs/sources_1/imports/HDL/* $(FIRESIM)/sim/generated-src
 
 .PHONY: all c clean clean_distro_kernel distro driver edit_dts make_borg make_borg_tio make_poweroff mcs run_poweroff run_simulation xdma
 

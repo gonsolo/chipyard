@@ -10,3 +10,4 @@ memory_stats0.csv
 blkdev-log0
 latency_histogram.csv
 *.jou
+project.srcs
