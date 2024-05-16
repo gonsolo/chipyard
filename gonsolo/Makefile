@@ -17,20 +17,25 @@ SV = $(FIRESIM)/sim/generated-src/$(PLATFORM)/$(QUINTUPLET)/$(DESIGN)-generated.
 # The driver is a x86-64 binary that loads the linux kernel and a base image and runs the FPGA via PCI-Express.
 DRIVER =$(FIRESIM)/sim/output/$(PLATFORM)/$(QUINTUPLET)/FireSim-rhsresearch_nitefury_ii
 
-# The bitstream the FPGA is flashed with
+# Vivado MCS file: This is the bitstream the FPGA is programmed with
 MCS = out.mcs
 
 # The device tree
 DTS = $(FIRESIM)/sim/generated-src/$(PLATFORM)/$(QUINTUPLET)/firesim.firesim.FireSim.BorgConfig.dts
+edit_dts:
+	vi $(DTS)
+ls_dts:
+	ls -lh $(DTS)
 
 all: out.mcs $(DRIVER)
 
 driver: $(DRIVER)
-$(SV) $(DRIVER) $(MCS):
+$(SV) $(DRIVER):
 	$(MAKE) -j $(shell nproc) -C $(FIRESIM)/sim RISCV=$(RISCV) FIRESIM_ENV_SOURCED=$(FIRESIM_ENV_SOURCED) PLATFORM=$(PLATFORM) TARGET_PROJECT=$(TARGET_PROJECT) DESIGN=$(DESIGN) TARGET_CONFIG=$(TARGET_CONFIG) PLATFORM_CONFIG=$(PLATFORM_CONFIG) replace-rtl
 
-# Vivado MCS file: This is the bitstream the FPGA is programmed with
+mcs: $(MCS)
 $(MCS): $(DRIVER)
+	ln -sf $(FIRESIM)/platforms/$(PLATFORM)/NiteFury-and-LiteFury-firesim/Sample-Projects/Project-0/cl_$(QUINTUPLET)/Nitefury-II/project/project.srcs .
 	vivado -mode batch -source top.tcl -tclargs $(FREQUENCY) $(STRATEGY)
 
 # The permissions have to be set for non-root users: sudo chmod a+rw /dev/xdma0_*
@@ -84,5 +89,5 @@ c: clean
 clean:
 	rm -rf project project.cache *.log *.jou $(SV) $(DRIVER) check_fingerprint
 
-.PHONY: all c clean clean_distro_kernel distro driver make_borg make_borg_tio make_poweroff run_poweroff run_simulation xdma
+.PHONY: all c clean clean_distro_kernel distro driver edit_dts make_borg make_borg_tio make_poweroff mcs run_poweroff run_simulation xdma
 
