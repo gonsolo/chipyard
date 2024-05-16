@@ -87,7 +87,7 @@ run_borg_tio: make_borg_tio
 
 c: clean
 clean:
-	rm -rf project project.cache *.log *.jou $(SV) $(DRIVER) check_fingerprint
+	rm -rf project project.cache *.log *.jou $(SV) $(DRIVER) check_fingerprint $(MCS)
 
 .PHONY: all c clean clean_distro_kernel distro driver edit_dts make_borg make_borg_tio make_poweroff mcs run_poweroff run_simulation xdma
 
