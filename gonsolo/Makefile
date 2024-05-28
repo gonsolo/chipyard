@@ -63,7 +63,9 @@ clean_distro_kernel:
 	rm -f $(BASE_BIN)
 
 xdma:
+ifneq ($(shell lsmod|grep xdma)xxx, xxx)
 	sudo rmmod xdma
+endif
 	sudo modprobe xdma poll_mode=1 interrupt_mode=2
 	sudo chmod a+rw /dev/xdma0_*
 
