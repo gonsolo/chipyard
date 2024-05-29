@@ -39,6 +39,7 @@
 - [iceblk-driver](https://github.com/gonsolo/iceblk-driver)
 - [icenet-driver](https://github.com/gonsolo/icenet-driver)
 - [FireMarshal](https://github.com/gonsolo/FireMarshal)
+- [Busybox](https://github.com/gonsolo/busybox)
 
 ## Overview
 The following notes are for running a full system simulation of a RISC-V system on the latest Arch Linux distribution.
