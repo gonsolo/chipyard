@@ -23,6 +23,7 @@
 7. Install `riscv64-linux-gnu-gcc`, `mkdir ~/bin`, add `~/bin` to your PATH, for all of (ar, gcc, ld, nm, objcopy, objdump, strip) link /usr/bin/riscv64-linux-gnu-x to ~/bin/riscv64-unknown-linux-gnu-x.
 8. In `software/firemarshal`, `./init-submodules.sh`, in gonsolo `make distro`. This gives you a RISC-V Linux kernel at `images/firechip/br-base/br-base-bin` and a root filesystem at `images/firechip/br-base/br-base.img`.
 9. `make run_simulation`.
+10. Download Debian image from `https://people.debian.org/~gio/dqib`, convert to raw with `qemu-imb convert -f qcow2 -O raw`, find offset with `fdisk -l image.img`, and strip partition table with `dd if=bla of=laber bs=512 skip=offset`. You should be able to boot this image instead of br-base.img.
 
 ### TODO
 
