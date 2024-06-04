@@ -69,10 +69,21 @@ endif
 	sudo modprobe xdma poll_mode=1 interrupt_mode=2
 	sudo chmod a+rw /dev/xdma0_*
 
-DRIVER_FLAGS = +permissive +macaddr0=00:12:6D:00:00:02 +niclog0=niclog0 +blkdev-log0=blkdev-log0 +trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 +dwarf-file-name=$(BIN_DWARF) +autocounter-readrate=0 +autocounter-filename-base=AUTOCOUNTERFILE +print-start=0 +print-end=-1 +linklatency0=6405 +netbw0=200 +shmemportname0=default +domain=0x0000 +bus=0x08 +device=0x00 +function=0x0 +bar=0x0 +pci-vendor=0x10ee +pci-device=0x903f +permissive-off +prog0=$(BASE_BIN)
+DRIVER_FLAGS = +permissive +macaddr0=00:12:6D:00:00:02 +niclog0=niclog0 +blkdev-log0=blkdev-log0 \
+	+trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 \
+	+dwarf-file-name=$(BIN_DWARF) +autocounter-readrate=0 \
+	+autocounter-filename-base=AUTOCOUNTERFILE +print-start=0 +print-end=-1 +linklatency0=6405 \
+	+netbw0=200 +shmemportname0=default +domain=0x0000 +bus=0x08 +device=0x00 +function=0x0 \
+	+bar=0x0 +pci-vendor=0x10ee +pci-device=0x903f +permissive-off +prog0=$(BASE_BIN)
+
+DEBIAN_IMG = /home/gonsolo/Downloads/riscv/dqib_riscv64-virt/bla.img
+UBUNTU_IMG = /home/gonsolo/work/chipyard/software/firemarshal/boards/default/distros/ubuntu/rootfs.img
 
 run_simulation:
-	$(DRIVER) $(DRIVER_FLAGS) +blkdev0=$(BASE_IMG)
+	#$(DRIVER) $(DRIVER_FLAGS) +blkdev0=$(BASE_IMG)
+	$(DRIVER) $(DRIVER_FLAGS) +blkdev0=$(DEBIAN_IMG)
+	#$(DRIVER) $(DRIVER_FLAGS) +blkdev0=$(UBUNTU_IMG)
+
 
 WORKLOADS = $(FIRESIM)/deploy/workloads
 
@@ -96,7 +107,12 @@ run_borg_tio: make_borg_tio
 
 c: clean
 clean:
-	rm -rf project project.cache *.log *.jou $(SV) $(DRIVER) check_fingerprint $(MCS) project.srcs/sources_1/imports/HDL/* $(FIRESIM)/sim/generated-src
+	rm -rf project project.cache *.log *.jou $(SV) $(DRIVER) check_fingerprint $(MCS) \
+		project.srcs/sources_1/imports/HDL/* $(FIRESIM)/sim/generated-src
 
-.PHONY: all c clean clean_distro_kernel distro driver edit_dts ls-dts ls-driver make_borg make_borg_tio make_poweroff mcs run_poweroff run_simulation xdma
+program_device:
+	vivado_lab -mode tcl -source program.tcl
+
+.PHONY: all c clean clean_distro_kernel distro driver edit_dts ls-dts ls-driver make_borg \
+	make_borg_tio make_poweroff mcs run_poweroff program_device run_simulation xdma
 
