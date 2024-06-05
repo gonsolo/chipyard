@@ -11,3 +11,4 @@ blkdev-log0
 latency_histogram.csv
 *.jou
 project.srcs
+debian.qcow2

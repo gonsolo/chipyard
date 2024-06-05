@@ -69,6 +69,22 @@ endif
 	sudo modprobe xdma poll_mode=1 interrupt_mode=2
 	sudo chmod a+rw /dev/xdma0_*
 
+NBD = /dev/nbd0
+NBDP = /dev/nbd0p1
+
+connect_debian:
+ifeq ($(shell lsmod|grep nbd)xxx, xxx)
+	sudo modprobe nbd
+endif
+	sudo qemu-nbd --connect=$(NBD) debian.qcow2
+	sleep 0.1
+	sudo chmod a+rw $(NBDP)
+
+disconnect_debian:
+	sudo qemu-nbd --disconnect $(NBD)
+
+DEBIAN_IMG = /dev/nbd0p1
+
 DRIVER_FLAGS = +permissive +macaddr0=00:12:6D:00:00:02 +niclog0=niclog0 +blkdev-log0=blkdev-log0 \
 	+trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 \
 	+dwarf-file-name=$(BIN_DWARF) +autocounter-readrate=0 \
@@ -76,14 +92,8 @@ DRIVER_FLAGS = +permissive +macaddr0=00:12:6D:00:00:02 +niclog0=niclog0 +blkdev-
 	+netbw0=200 +shmemportname0=default +domain=0x0000 +bus=0x08 +device=0x00 +function=0x0 \
 	+bar=0x0 +pci-vendor=0x10ee +pci-device=0x903f +permissive-off +prog0=$(BASE_BIN)
 
-DEBIAN_IMG = /home/gonsolo/Downloads/riscv/dqib_riscv64-virt/bla.img
-UBUNTU_IMG = /home/gonsolo/work/chipyard/software/firemarshal/boards/default/distros/ubuntu/rootfs.img
-
 run_simulation:
-	#$(DRIVER) $(DRIVER_FLAGS) +blkdev0=$(BASE_IMG)
 	$(DRIVER) $(DRIVER_FLAGS) +blkdev0=$(DEBIAN_IMG)
-	#$(DRIVER) $(DRIVER_FLAGS) +blkdev0=$(UBUNTU_IMG)
-
 
 WORKLOADS = $(FIRESIM)/deploy/workloads
 
@@ -113,6 +123,10 @@ clean:
 program_device:
 	vivado_lab -mode tcl -source program.tcl
 
-.PHONY: all c clean clean_distro_kernel distro driver edit_dts ls-dts ls-driver make_borg \
-	make_borg_tio make_poweroff mcs run_poweroff program_device run_simulation xdma
+qemu_debian:
+	qemu-system-riscv64 -machine 'virt' -cpu 'rv64' -m 1G -device virtio-blk-device,drive=hd -drive file=debian.qcow2,if=none,id=hd -device virtio-net-device,netdev=net -netdev user,id=net,hostfwd=tcp::2222-:22 -bios /usr/share/opensbi/lp64/generic/firmware/fw_jump.elf -kernel /usr/share/u-boot-qemu-bin/qemu-riscv64_smode/uboot.elf -object rng-random,filename=/dev/urandom,id=rng -device virtio-rng-device,rng=rng -nographic -append "root=LABEL=rootfs console=ttyS0"
+
+.PHONY: all c clean clean_distro_kernel connect_debian disconnect_debian distro driver edit_dts \
+	ls-dts ls-driver make_borg make_borg_tio make_poweroff mcs run_poweroff program_device \
+	qemu_debian run_simulation xdma
 
