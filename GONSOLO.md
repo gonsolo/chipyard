@@ -24,10 +24,7 @@
 8. In `software/firemarshal`, `./init-submodules.sh`, in gonsolo `make distro`. This gives you a RISC-V Linux kernel at `images/firechip/br-base/br-base-bin` (and a root filesystem at `images/firechip/br-base/br-base.img` that we don't use).
 9. Download Debian image from `https://people.debian.org/~gio/dqib` and rename it to `./debian.qcow2`. Connect as network block device with `make connect_debian`. (Disconnect with `make disconnect_debian`.)
 10. `make run_simulation`.
-
-### TODO
-
-1. TODO: Generate workload.
+11. You can also run the debian image with QEMU, and e.g. install Mesa source there.
 
 ## Custom forks
 
