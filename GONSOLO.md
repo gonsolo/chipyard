@@ -22,7 +22,7 @@
 6. `git clone https://github.com/gonsolo/dma_ip_drivers`, `cd xdma/xdma`, `sudo make clean install`. `sudo rmmod xdma`, `sudo modprobe xdma poll_mode=1 interrupt_mode=2`. Make sure the driver loaded with `dmesg`; `xdma:probe_one: pdev 0x000000003afdbfb6, err -22.` is bad, `xdma:cdev_xvc_init: xcdev 0x000000001f4e84d5, bar 0, offset 0x40000.` is good. Also make sure there are device files `ls /dev/xdma_*`, and can be read/written to `sudo chmod a+rw /dev/xdma*`.
 7. Install `riscv64-linux-gnu-gcc`, `mkdir ~/bin`, add `~/bin` to your PATH, for all of (ar, gcc, ld, nm, objcopy, objdump, strip) link /usr/bin/riscv64-linux-gnu-x to ~/bin/riscv64-unknown-linux-gnu-x.
 8. In `software/firemarshal`, `./init-submodules.sh`, in gonsolo `make distro`. This gives you a RISC-V Linux kernel at `images/firechip/br-base/br-base-bin` (and a root filesystem at `images/firechip/br-base/br-base.img` that we don't use).
-9. Download Debian image from `https://people.debian.org/~gio/dqib` and rename it to `./debian.qcow2`. Connect as network block device with `make connect_debian`. (Disconnect with `make disconnect_debian`.)
+9. Download a RISC-V Debian image from `https://people.debian.org/~gio/dqib` and rename it to `./debian.qcow2`. Connect as network block device with `make connect_debian`. (Disconnect with `make disconnect_debian`.)
 10. `make run_simulation`.
 11. You can also run the debian image with QEMU, and e.g. install Mesa source there.
 
