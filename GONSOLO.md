@@ -14,17 +14,17 @@
 
 ### Steps
 
-1. ```git clone -b gonsolo git@github.com:gonsolo/chipyard.git```
-2. ```git submodule update --init generators/bar-fetchers generators/boom generators/caliptra-aes-acc generators/constellation generators/diplomacy generators/fft-generator generators/hardfloat generators/hwacha generators/ibex generators/icenet generators/mempress generators/rocc-acc-utils generators/rocket-chip generators/rocket-chip-blocks generators/rocket-chip-inclusive-cache generators/shuttle generators/riscv-sodor generators/testchipip sims/firesim tools/cde tools/dsptools tools/fixedpoint tools/rocket-dsp-utils```
-3. ```cd sims/firesim && git submodule update --init platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim```
-4. ```cd gonsolo; make```. This results in a driver called `FireSim-rhsresearch_nitefury_ii` and an FPGA bitstream `out.mcs`.
-5. Program FPGA: Open vivado_lab, "Open Hardware Manager", "Open Target", "Auto connect". Right-clock FPGA and select "Add configuration memory device", choose "s25fl256sxxxxxx0-spi-x1_x2_x4", "yes" to programming, choose "out.mcs" as configuration file, reboot. `lspci -d 10ee:` should show `Processing accelerators: Xilinx Corporation Device 903f`.
-6. `git clone https://github.com/gonsolo/dma_ip_drivers`, `cd xdma/xdma`, `sudo make clean install`. `sudo rmmod xdma`, `sudo modprobe xdma poll_mode=1 interrupt_mode=2`. Make sure the driver loaded with `dmesg`; `xdma:probe_one: pdev 0x000000003afdbfb6, err -22.` is bad, `xdma:cdev_xvc_init: xcdev 0x000000001f4e84d5, bar 0, offset 0x40000.` is good. Also make sure there are device files `ls /dev/xdma_*`, and can be read/written to `sudo chmod a+rw /dev/xdma*`.
-7. Install `riscv64-linux-gnu-gcc`, `mkdir ~/bin`, add `~/bin` to your PATH, for all of (ar, gcc, ld, nm, objcopy, objdump, strip) link /usr/bin/riscv64-linux-gnu-x to ~/bin/riscv64-unknown-linux-gnu-x.
-8. In `software/firemarshal`, `./init-submodules.sh`, in gonsolo `make distro`. This gives you a RISC-V Linux kernel at `images/firechip/br-base/br-base-bin` (and a root filesystem at `images/firechip/br-base/br-base.img` that we don't use).
-9. Download a RISC-V Debian image from `https://people.debian.org/~gio/dqib` and rename it to `./debian.qcow2`. Connect as network block device with `make connect_debian`. (Disconnect with `make disconnect_debian`.)
-10. `make run_simulation`.
-11. You can also run the debian image with QEMU, and e.g. install Mesa source there.
+1. Clone main repository: ```git clone -b gonsolo git@github.com:gonsolo/chipyard.git```
+2. Update needed submodules: ```git submodule update --init generators/bar-fetchers generators/boom generators/caliptra-aes-acc generators/constellation generators/diplomacy generators/fft-generator generators/hardfloat generators/hwacha generators/ibex generators/icenet generators/mempress generators/rocc-acc-utils generators/rocket-chip generators/rocket-chip-blocks generators/rocket-chip-inclusive-cache generators/shuttle generators/riscv-sodor generators/testchipip sims/firesim tools/cde tools/dsptools tools/fixedpoint tools/rocket-dsp-utils```
+3. Update another needed submodule: ```cd sims/firesim && git submodule update --init platforms/rhsresearch_nitefury_ii/NiteFury-and-LiteFury-firesim```
+4. Make the FPGA driver and bitstream: ```cd gonsolo; make```. This results in a driver called `FireSim-rhsresearch_nitefury_ii` and an FPGA bitstream `out.mcs`.
+5. Program FPGA: ```make program_device```. (The first time you may have to add a memory configuration, this is described at [Firesim](https://fires.im/).)
+6. Make XDMA drivers: `git clone https://github.com/gonsolo/dma_ip_drivers`, `cd xdma/xdma`, `sudo make clean install`. `sudo rmmod xdma`, `sudo modprobe xdma poll_mode=1 interrupt_mode=2`. Make sure the driver loaded with `dmesg`; `xdma:probe_one: pdev 0x000000003afdbfb6, err -22.` is bad, `xdma:cdev_xvc_init: xcdev 0x000000001f4e84d5, bar 0, offset 0x40000.` is good. Also make sure there are device files `ls /dev/xdma_*`, and can be read/written to `sudo chmod a+rw /dev/xdma*`.
+7. Toolchain: Install `riscv64-linux-gnu-gcc`, `mkdir ~/bin`, add `~/bin` to your PATH, for all of (ar, gcc, ld, nm, objcopy, objdump, strip) link /usr/bin/riscv64-linux-gnu-x to ~/bin/riscv64-unknown-linux-gnu-x.
+8. Kernel: In `software/firemarshal`, `./init-submodules.sh`, in gonsolo `make distro`. This gives you a RISC-V Linux kernel at `images/firechip/br-base/br-base-bin` (and a root filesystem at `images/firechip/br-base/br-base.img` that we don't use).
+9. RISC-V image: Download a RISC-V Debian image from `https://people.debian.org/~gio/dqib` and rename it to `./debian.qcow2`. Connect as network block device with `make connect_debian`. (Disconnect with `make disconnect_debian`.)
+10. Run simulation: `make run_simulation`.
+11. Run image fast without hardware simulator: `make qemu_debian`. This can be used to do stuff that doesn't require hardware simulation, e.g. install Mesa source, write the driver, etc...
 
 ## Custom forks
 
