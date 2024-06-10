@@ -16,20 +16,24 @@ SV = $(FIRESIM)/sim/generated-src/$(PLATFORM)/$(QUINTUPLET)/$(DESIGN)-generated.
 
 # The driver is a x86-64 binary that loads the linux kernel and a base image and runs the FPGA via PCI-Express.
 DRIVER =$(FIRESIM)/sim/output/$(PLATFORM)/$(QUINTUPLET)/FireSim-rhsresearch_nitefury_ii
-ls-driver:
-	ls -lh $(DRIVER)
 
 # Vivado MCS file: This is the bitstream the FPGA is programmed with
 MCS = out.mcs
 
 # The device tree
 DTS = $(FIRESIM)/sim/generated-src/$(PLATFORM)/$(QUINTUPLET)/firesim.firesim.FireSim.BorgConfig.dts
+
+# Default target
+all: out.mcs $(DRIVER)
+
+ls-driver:
+	ls -lh $(DRIVER)
+
 edit_dts:
 	vi $(DTS)
 ls_dts:
 	ls -lh $(DTS)
 
-all: out.mcs $(DRIVER)
 
 driver: $(DRIVER)
 $(SV) $(DRIVER):
