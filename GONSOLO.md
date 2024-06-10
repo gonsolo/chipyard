@@ -1,5 +1,5 @@
 # BORG Graphics -- Build your own graphics hardware
-## (Aka as [Chipyard](https://github.com/ucb-bar/chipyard) and [Firesim](https://github.com/firesim/firesim) without [Conda](https://docs.conda.io/en/latest), [Miniforge](https://github.com/conda-forge/miniforge) and complicated python scripts, running but with the latest [drivers](https://github.com/gonsolo/dma_ip_drivers) and [toolchains](https://aur.archlinux.org/packages/spike-git)!)
+## (Aka as [Chipyard](https://github.com/ucb-bar/chipyard) and [Firesim](https://github.com/firesim/firesim) without [Conda](https://docs.conda.io/en/latest), [Miniforge](https://github.com/conda-forge/miniforge) and complicated python scripts, using the latest [drivers](https://github.com/gonsolo/dma_ip_drivers) and [toolchains](https://aur.archlinux.org/packages/spike-git)!)
 
 ## Makefile-based workflow for Arch Linux
 
