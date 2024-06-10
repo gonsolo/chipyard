@@ -50,17 +50,23 @@ check_fingerprint:
 	$(DRIVER) +permissive +bus=08:00.0 +check-fingerprint +permissive-off +prog0=none
 
 FIREMARSHAL = ../software/firemarshal
-FIRECHIP = $(FIREMARSHAL)/images/firechip
-BR_BASE = $(FIRECHIP)/br-base
+IMAGES_FIRECHIP = $(FIREMARSHAL)/images/firechip
+BR_BASE = $(IMAGES_FIRECHIP)/br-base
 BASE_IMG = $(BR_BASE)/br-base.img
 BIN_DWARF = $(BR_BASE)/br-base-bin-dwarf
 BASE_BIN = $(BR_BASE)/br-base-bin
+BOARDS = $(FIREMARSHAL)/boards
+DRIVERS = $(BOARDS)/firechip/drivers
 
 distro: $(BASE_BIN) $(BASE_IMG)
 $(BASE_BIN) $(BASE_IMG):
 	cd $(FIREMARSHAL); ./marshal -v build br-base.json
 clean_distro_kernel:
 	rm -f $(BASE_BIN)
+clean_distro:
+	cd $(BOARDS)/default/linux; make mrproper
+	cd $(DRIVERS)/icenet-driver; make clean
+	cd $(DRIVERS)/iceblk-driver; make clean
 
 xdma:
 ifneq ($(shell lsmod|grep xdma)xxx, xxx)
