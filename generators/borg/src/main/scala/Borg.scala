@@ -76,7 +76,7 @@ class BorgMMIOChiselModule(val w: Int) extends Module {
 
 class BorgTL(params: BorgParams, beatBytes: Int)(implicit p: Parameters) extends ClockSinkDomain(ClockSinkParameters())(p) {
 
-  val device = new SimpleDevice("borgDevice", Seq("borg,borg-1"))
+  val device = new SimpleDevice("borg-device", Seq("borg,borg-1"))
   val registerNode = TLRegisterNode(Seq(AddressSet(params.address, 4096-1)), device, "reg/control", beatBytes=beatBytes)
   val clientNode = TLClientNode(Seq(TLMasterPortParameters.v1(Seq(TLMasterParameters.v1(name = "dma-test", sourceId = IdRange(0, 1))))))
 
