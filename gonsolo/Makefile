@@ -53,7 +53,10 @@ $(MCS): $(DRIVER)
 check_fingerprint:
 	$(DRIVER) +permissive +bus=08:00.0 +check-fingerprint +permissive-off +prog0=none
 
-FIREMARSHAL = ../software/firemarshal
+this-makefile := $(lastword $(MAKEFILE_LIST))
+gonsolo_dir := $(realpath $(dir $(this-makefile)))
+
+FIREMARSHAL = $(gonsolo_dir)/../software/firemarshal
 IMAGES_FIRECHIP = $(FIREMARSHAL)/images/firechip
 BR_BASE = $(IMAGES_FIRECHIP)/br-base
 BASE_IMG = $(BR_BASE)/br-base.img
