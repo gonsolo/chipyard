@@ -110,24 +110,6 @@ run_simulation:
 
 WORKLOADS = $(FIRESIM)/deploy/workloads
 
-POWEROFF_IMG = $(WORKLOADS)/linux-poweroff/poweroffnode.ext2
-make_poweroff:
-	$(MAKE) -C $(WORKLOADS) linux-poweroff
-run_poweroff: make_poweroff
-	$(DRIVER) $(DRIVER_FLAGS) +blkdev0=$(POWEROFF_IMG)
-
-BORG_IMG = $(WORKLOADS)/borg/borgnode.ext2
-make_borg:
-	$(MAKE) -C $(WORKLOADS) borg
-run_borg: make_borg
-	$(DRIVER) $(DRIVER_FLAGS) +blkdev0=$(BORG_IMG)
-
-BORG_TIO_IMG = $(WORKLOADS)/borg-tio/borgtionode.ext2
-make_borg_tio:
-	$(MAKE) -C $(WORKLOADS) borg-tio
-run_borg_tio: make_borg_tio
-	$(DRIVER) $(DRIVER_FLAGS) +blkdev0=$(BORG_TIO_IMG)
-
 c: clean
 clean:
 	rm -rf project project.cache *.log *.jou $(SV) $(DRIVER) check_fingerprint $(MCS) \
@@ -142,6 +124,6 @@ qemu_debian:
 # FTP: sftp -P 2222 root@localhost
 
 .PHONY: all c clean clean_distro_kernel connect_debian disconnect_debian distro driver edit_dts \
-	ls-dts ls-driver make_borg make_borg_tio make_poweroff mcs run_poweroff program_device \
+	ls-dts ls-driver make_borg make_borg_tio make_poweroff mcs program_device \
 	qemu_debian run_simulation xdma
 
