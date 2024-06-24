@@ -74,6 +74,8 @@ clean_distro:
 	cd $(BOARDS)/default/linux; make mrproper
 	cd $(DRIVERS)/icenet-driver; make clean
 	cd $(DRIVERS)/iceblk-driver; make clean
+# Compile manually:
+# make ARCH=riscv CROSS_COMPILE=riscv64-unknown-linux-gnu- vmlinux
 
 xdma:
 ifneq ($(shell lsmod|grep xdma)xxx, xxx)
