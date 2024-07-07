@@ -121,7 +121,7 @@ program_device:
 	vivado_lab -mode tcl -source program.tcl
 
 qemu_debian:
-	qemu-system-riscv64 -machine 'virt' -cpu 'rv64' -m 1G -device virtio-blk-device,drive=hd -drive file=debian.qcow2,if=none,id=hd -device virtio-net-device,netdev=net -netdev user,id=net,hostfwd=tcp::2222-:22 -bios /usr/share/opensbi/lp64/generic/firmware/fw_jump.elf -kernel /usr/share/u-boot-qemu-bin/qemu-riscv64_smode/uboot.elf -object rng-random,filename=/dev/urandom,id=rng -device virtio-rng-device,rng=rng -nographic -append "root=LABEL=rootfs console=ttyS0"
+	qemu-system-riscv64 -machine 'virt' -cpu 'rv64' -smp cores=12,threads=2 -m 8G -device virtio-blk-device,drive=hd -drive file=debian.qcow2,if=none,id=hd -device virtio-net-device,netdev=net -netdev user,id=net,hostfwd=tcp::2222-:22 -bios /usr/share/opensbi/lp64/generic/firmware/fw_jump.elf -kernel /usr/share/u-boot-qemu-bin/qemu-riscv64_smode/uboot.elf -object rng-random,filename=/dev/urandom,id=rng -device virtio-rng-device,rng=rng -nographic -append "root=LABEL=rootfs console=ttyS0"
 # SSH: ssh root@localhost -p 2222
 # FTP: sftp -P 2222 root@localhost
 
