@@ -125,7 +125,10 @@ qemu_debian:
 # SSH: ssh root@localhost -p 2222
 # FTP: sftp -P 2222 root@localhost
 
+xz:
+	xz --verbose --keep debian.qcow2
+
 .PHONY: all c clean clean_distro_kernel connect_debian disconnect_debian distro driver edit_dts \
 	ls-dts ls-driver make_borg make_borg_tio make_poweroff mcs program_device \
-	qemu_debian run_simulation xdma
+	qemu_debian run_simulation xdma xz
 
